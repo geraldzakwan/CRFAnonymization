@@ -67,9 +67,8 @@ def sent2labels(sent):
 def sent2tokens(sent):
     return [token for token, postag, label in sent]
 
-nltk.corpus.conll2002.fileids()
-
-['esp.testa', 'esp.testb', 'esp.train', 'ned.testa', 'ned.testb', 'ned.train']
+print(nltk.corpus.conll2002.fileids())
+# ['esp.testa', 'esp.testb', 'esp.train', 'ned.testa', 'ned.testb', 'ned.train']
 
 train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
 test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
