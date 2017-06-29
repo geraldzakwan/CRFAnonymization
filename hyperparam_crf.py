@@ -154,6 +154,11 @@ ax.scatter(_x, _y, c=_c, s=60, alpha=0.9, edgecolors=[0,0,0])
 
 print("Dark blue => {:0.4}, dark red => {:0.4}".format(min(_c), max(_c)))
 
+sorted_labels = sorted(
+    labels,
+    key=lambda name: (name[1:], name[0])
+)
+
 crf = rs.best_estimator_
 y_pred = crf.predict(X_test)
 print(metrics.flat_classification_report(
