@@ -131,45 +131,48 @@ elif(sys.argv[1] == '2'):
 
     for doc in train_sents:
         for chunk in doc:
-            word = chunk[0]
-            pos_tag = chunk[1]
-            ner = chunk[2]
-
-            word = remove_quote(word)
-            # query = "INSERT INTO ner_annotated_corpus_conll2002_ned (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
-            query = "INSERT INTO ner_annotated_corpus_conll2002_ned_2 (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
-            try:
-                cur.execute(query)
-                db.commit()
-            except:
-                query_error_list.append(query)
-                db.rollback()
+            # word = chunk[0]
+            # pos_tag = chunk[1]
+            # ner = chunk[2]
+            #
+            # word = remove_quote(word)
+            # # query = "INSERT INTO ner_annotated_corpus_conll2002_ned (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
+            # query = "INSERT INTO ner_annotated_corpus_conll2002_ned_2 (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
+            # try:
+            #     cur.execute(query)
+            #     db.commit()
+            # except:
+            #     query_error_list.append(query)
+            #     db.rollback()
 
             it = it + 1
             print(it)
 
-    print('--------------')
-    print('--------------')
-    print('--------------')
-    for query_error in query_error_list:
-        print(query_error)
-
-    print('Cannot be printed to ext file')
-    print('--------------')
-    print('--------------')
-    print('--------------')
-    thefile = open('query_error_list_conll2002_ned.txt', 'w')
-    for item in query_error_list:
-        try:
-            thefile.write("%s\n" % item)
-        except:
-            print(item)
-
-    db.close()
+    # print('--------------')
+    # print('--------------')
+    # print('--------------')
+    # for query_error in query_error_list:
+    #     print(query_error)
+    #
+    # print('Cannot be printed to ext file')
+    # print('--------------')
+    # print('--------------')
+    # print('--------------')
+    # thefile = open('query_error_list_conll2002_ned.txt', 'w')
+    # for item in query_error_list:
+    #     try:
+    #         thefile.write("%s\n" % item)
+    #     except:
+    #         print(item)
+    #
+    # db.close()
 
 elif(sys.argv[1] == '3'):
     docs = nltk.corpus.ieer.parsed_docs('APW_19980314')
     for items in docs[0].text:
         print(items)
+    # Harus kumpulin per sentence (per titik)
+    # pos_tag in pake nltk automatic tag
+    # baru masukin ke db
 else:
     print('Not defined')
