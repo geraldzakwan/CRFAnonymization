@@ -2,7 +2,6 @@
 
 import sys
 import nltk
-from nltk import pos_tag, word_tokenize, ne_chunk
 import MySQLdb
 
 def word2features(sent, i):
@@ -69,7 +68,7 @@ db = MySQLdb.connect(
                     )
 
 comma = ", "
-quote = "'"
+quote = '"'
 cur = db.cursor()
 
 def remove_quote(word):
@@ -169,41 +168,90 @@ elif(sys.argv[1] == '2'):
     # db.close()
 
 elif(sys.argv[1] == '3'):
-    docs = nltk.corpus.ieer.parsed_docs('APW_19980314')
-    sentence = ""
-    sentence_list = []
-    for items in docs[0].text:
-        end_of_sentence = False
+    # print(nltk.corpus.ieer.fileids())
+    it = 0
+    query_error_list = []
+    for docs_name in nltk.corpus.ieer.fileids():
+        documents = nltk.corpus.ieer.parsed_docs(docs_name)
+        sentence = ""
+        sentence_list = []
+        for docs in documents:
+            for items in docs.text:
+                end_of_sentence = False
 
-        if(type(items) == nltk.tree.Tree):
-            # word = str(items[0]) + ' - ' + str(items.label())
-            word = str(items[0])
-        elif(type(items) == unicode):
-            word = str(items)
-            if(word.find('.') != -1):
-                end_of_sentence = True
+                if(type(items) == nltk.tree.Tree):
+                    # word = str(items[0]) + ' - ' + str(items.label())
+                    word = str(items[0])
+                elif(type(items) == unicode):
+                    word = str(items)
+                    if(word.find('.') != -1):
+                        end_of_sentence = True
 
-        sentence = sentence + word + " "
-        if(end_of_sentence):
-            sentence = sentence[:len(sentence)-1]
-            sentence_list.append(sentence)
+                sentence = sentence + word + " "
+                if(end_of_sentence):
+                    sentence = sentence[:len(sentence)-1]
+                    sentence_list.append(sentence)
 
-            text = word_tokenize(sentence)
-            pos_tagged_sentence = pos_tag(text)
-            ne_chunked_sentence = ne_chunk(pos_tagged_sentence)
+                    text = nltk.word_tokenize(sentence)
+                    pos_tagged_sentence = nltk.pos_tag(text)
+                    ne_chunked_sentence = nltk.ne_chunk(pos_tagged_sentence)
 
-            print(ne_chunked_sentence)
-            # print(pos_tagged_sentence)
-            # print(sentence)
-            print('----------------')
-            sentence = ""
+                    for words in ne_chunked_sentence:
+                        word = None
+                        pos_tag = None
+                        ner = None
 
-    # for sentence in sentence_list:
-    #     print(sentence)
-    #     print('----------------')
+                        it = it + 1
+                        print(it)
+                        if(type(words) == nltk.tree.Tree):
+                            word = words[0][0]
+                            pos_tag = words[0][1]
+                            ner = words.label()
+                            # print(words.label(), words[0][0], words[0][1])
+                        else:
+                            word = words[0]
+                            pos_tag = words[1]
+                            ner = 'O'
+                            # print(words[0], words[1])
+
+                        # word = remove_quote(word)
+                        # query = "INSERT INTO ner_annotated_corpus_ieer (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ");";
+                        # print(query)
+                        # try:
+                        #     cur.execute(query)
+                        #     db.commit()
+                        # except:
+                        #     query_error_list.append(query)
+                        #     db.rollback()
+
+                    # print(ne_chunked_sentence)
+                    # print(pos_tagged_sentence)
+                    # print(sentence)
+                    print('----------------')
+                    sentence = ""
+
+    print('--------------')
+    print('--------------')
+    print('--------------')
+    for query_error in query_error_list:
+        print(query_error)
+
+    print('Cannot be printed to ext file')
+    print('--------------')
+    print('--------------')
+    print('--------------')
+    thefile = open('query_error_list_ieer.txt', 'w')
+    for item in query_error_list:
+        try:
+            thefile.write("%s\n" % item)
+        except:
+            print(item)
+
+    db.close()
 
     # Harus kumpulin per sentence (per titik)
     # pos_tag in pake nltk automatic tag
     # baru masukin ke db
+    db.close()
 else:
     print('Not defined')
