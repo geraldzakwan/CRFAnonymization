@@ -2,6 +2,7 @@
 
 import sys
 import nltk
+from nltk import pos_tag, word_tokenize, ne_chunk
 import MySQLdb
 
 def word2features(sent, i):
@@ -87,41 +88,41 @@ if(sys.argv[1] == '1'):
 
     for doc in train_sents:
         for chunk in doc:
-            word = chunk[0]
-            pos_tag = chunk[1]
-            ner = chunk[2]
-
-            word = remove_quote(word)
-            query = "INSERT INTO ner_annotated_corpus_conll2002_esp (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
-            try:
-                cur.execute(query)
-                db.commit()
-            except:
-                query_error_list.append(query)
-                db.rollback()
+            # word = chunk[0]
+            # pos_tag = chunk[1]
+            # ner = chunk[2]
+            #
+            # word = remove_quote(word)
+            # query = "INSERT INTO ner_annotated_corpus_conll2002_esp (word, pos_tag, named_entity) VALUES (" + quote + word + quote + comma + quote + pos_tag + quote + comma + quote + ner + quote + ")";
+            # try:
+            #     cur.execute(query)
+            #     db.commit()
+            # except:
+            #     query_error_list.append(query)
+            #     db.rollback()
 
             it = it + 1
             print(it)
 
 
-    print('--------------')
-    print('--------------')
-    print('--------------')
-    for query_error in query_error_list:
-        print(query_error)
-
-    print('Cannot be printed to ext file')
-    print('--------------')
-    print('--------------')
-    print('--------------')
-    thefile = open('query_error_list_conll2002_esp.txt', 'w')
-    for item in query_error_list:
-        try:
-            thefile.write("%s\n" % item)
-        except:
-            print(item)
-
-    db.close()
+    # print('--------------')
+    # print('--------------')
+    # print('--------------')
+    # for query_error in query_error_list:
+    #     print(query_error)
+    #
+    # print('Cannot be printed to ext file')
+    # print('--------------')
+    # print('--------------')
+    # print('--------------')
+    # thefile = open('query_error_list_conll2002_esp.txt', 'w')
+    # for item in query_error_list:
+    #     try:
+    #         thefile.write("%s\n" % item)
+    #     except:
+    #         print(item)
+    #
+    # db.close()
 
 elif(sys.argv[1] == '2'):
     train_sents = list(nltk.corpus.conll2002.iob_sents('ned.train'))
@@ -169,8 +170,38 @@ elif(sys.argv[1] == '2'):
 
 elif(sys.argv[1] == '3'):
     docs = nltk.corpus.ieer.parsed_docs('APW_19980314')
+    sentence = ""
+    sentence_list = []
     for items in docs[0].text:
-        print(items)
+        end_of_sentence = False
+
+        if(type(items) == nltk.tree.Tree):
+            # word = str(items[0]) + ' - ' + str(items.label())
+            word = str(items[0])
+        elif(type(items) == unicode):
+            word = str(items)
+            if(word.find('.') != -1):
+                end_of_sentence = True
+
+        sentence = sentence + word + " "
+        if(end_of_sentence):
+            sentence = sentence[:len(sentence)-1]
+            sentence_list.append(sentence)
+
+            text = word_tokenize(sentence)
+            pos_tagged_sentence = pos_tag(text)
+            ne_chunked_sentence = ne_chunk(pos_tagged_sentence)
+
+            print(ne_chunked_sentence)
+            # print(pos_tagged_sentence)
+            # print(sentence)
+            print('----------------')
+            sentence = ""
+
+    # for sentence in sentence_list:
+    #     print(sentence)
+    #     print('----------------')
+
     # Harus kumpulin per sentence (per titik)
     # pos_tag in pake nltk automatic tag
     # baru masukin ke db
