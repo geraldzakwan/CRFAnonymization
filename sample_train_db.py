@@ -17,6 +17,7 @@ from sklearn_crfsuite import metrics
 import cPickle
 import MySQLdb
 import db_cfg
+import sys
 
 def word2features(sent, i):
     word = sent[i][0]
@@ -63,25 +64,13 @@ def word2features(sent, i):
 
 
 def sent2features(sent):
-    return [word2features(sent, i) for i in range(len(sent))]
+    return [word2features(sent, i) for i in range(1)]
 
 def sent2labels(sent):
     return [label for token, postag, label in sent]
 
 def sent2tokens(sent):
     return [token for token, postag, label in sent]
-
-# Ini doang yg perlu diganti
-# train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
-# test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
-#
-# print(test_sents[0][0])
-#
-# X_train = [sent2features(s) for s in train_sents]
-# y_train = [sent2labels(s) for s in train_sents]
-#
-# X_test = [sent2features(s) for s in test_sents]
-# y_test = [sent2labels(s) for s in test_sents]
 
 db = MySQLdb.connect (
     host = db_cfg.mysql_local['host'],
@@ -92,25 +81,52 @@ db = MySQLdb.connect (
 
 cur = db.cursor()
 
-cur.execute('SELECT COUNT(*) FROM ner_annotated_corpus_conll2002_esp')
+cur.execute('SELECT * FROM ner_annotated_corpus_conll2002_esp')
+
+train_sents = []
 
 for row in cur.fetchall():
-    print(row[0])
+    train_sents.append(row)
 
 db.close()
 
-# if(True):
-#     crf = sklearn_crfsuite.CRF(
-#         algorithm='lbfgs',
-#         c1=0.1,
-#         c2=0.1,
-#         max_iterations=100,
-#         all_possible_transitions=True
-#     )
-#     crf.fit(X_train, y_train)
-#     # Save model
-#     with open('saved_model_CRF.pkl', 'wb') as fid:
-#         cPickle.dump(crf, fid)
-# else:
-#     with open('saved_model_CRF.pkl', 'rb') as fid:
-#         crf = cPickle.load(fid)
+# for items in train_sents:
+#     print(items)
+
+# Ini doang yg perlu diganti
+train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
+# for items in train_sents:
+#     print(type(items[0]))
+#     print('------------------')
+test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
+
+X_train = [sent2features(s) for s in train_sents]
+y_train = [sent2labels(s) for s in train_sents]
+
+X_test = [sent2features(s) for s in test_sents]
+y_test = [sent2labels(s) for s in test_sents]
+
+if(True):
+    crf = sklearn_crfsuite.CRF(
+        algorithm='lbfgs',
+        c1=0.1,
+        c2=0.1,
+        max_iterations=100,
+        all_possible_transitions=True
+    )
+    crf.fit(X_train, y_train)
+    # Save model
+    with open(sys.argv[1], 'wb') as fid:
+        cPickle.dump(crf, fid)
+
+    print('Accuration:')
+    y_pred = crf.predict(X_test)
+    print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
+    print('-----------------')
+    print('-----------------')
+    print()
+    print()
+
+else:
+    with open('saved_model_CRF.pkl', 'rb') as fid:
+        crf = cPickle.load(fid)

@@ -14,6 +14,9 @@ import sklearn_crfsuite
 from sklearn_crfsuite import scorers
 from sklearn_crfsuite import metrics
 
+import cPickle
+import sys
+
 def word2features(sent, i):
     word = sent[i][0]
     postag = sent[i][1]
@@ -67,7 +70,7 @@ def sent2labels(sent):
 def sent2tokens(sent):
     return [token for token, postag, label in sent]
 
-print(nltk.corpus.conll2002.fileids())
+# print(nltk.corpus.conll2002.fileids())
 # ['esp.testa', 'esp.testb', 'esp.train', 'ned.testa', 'ned.testb', 'ned.train']
 
 train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
@@ -102,33 +105,53 @@ crf = sklearn_crfsuite.CRF(
 )
 crf.fit(X_train, y_train)
 
-print('Labels:')
-labels = list(crf.classes_)
-labels.remove('O')
-print(labels)
-print('-----------------')
-print('-----------------')
-print()
-print()
+if(False):
+    crf = sklearn_crfsuite.CRF(
+        algorithm='lbfgs',
+        c1=0.1,
+        c2=0.1,
+        max_iterations=100,
+        all_possible_transitions=True
+    )
+    crf.fit(X_train, y_train)
+    # Save model
+    with open(sys.argv[0], 'wb') as fid:
+        cPickle.dump(crf, fid)
+else:
+    with open(sys.argv[1], 'rb') as fid:
+        crf = cPickle.load(fid)
 
-print('Accuration:')
+# print('Labels:')
+# labels = list(crf.classes_)
+# labels.remove('O')
+# print(labels)
+# print('-----------------')
+# print('-----------------')
+# print()
+# print()
+
 y_pred = crf.predict(X_test)
-print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
+print(test_sents[0])
 print('-----------------')
-print('-----------------')
-print()
-print()
+print(y_pred[0])
 
-print('Confusion matrix:')
-# group B and I results
-sorted_labels = sorted(
-    labels,
-    key=lambda name: (name[1:], name[0])
-)
-print(metrics.flat_classification_report(
-    y_test, y_pred, labels=sorted_labels, digits=3
-))
-print('-----------------')
-print('-----------------')
-print()
-print()
+# print('Accuration:')
+# print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
+# print('-----------------')
+# print('-----------------')
+# print()
+# print()
+#
+# print('Confusion matrix:')
+# # group B and I results
+# sorted_labels = sorted(
+#     labels,
+#     key=lambda name: (name[1:], name[0])
+# )
+# print(metrics.flat_classification_report(
+#     y_test, y_pred, labels=sorted_labels, digits=3
+# ))
+# print('-----------------')
+# print('-----------------')
+# print()
+# print()

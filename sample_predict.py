@@ -15,6 +15,7 @@ from sklearn_crfsuite import scorers
 from sklearn_crfsuite import metrics
 
 import cPickle
+import sys
 
 def word2features(sent, i):
     word = sent[i][0]
@@ -72,8 +73,6 @@ def sent2tokens(sent):
 train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
 test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
 
-print(test_sents[0][0])
-
 X_train = [sent2features(s) for s in train_sents]
 y_train = [sent2labels(s) for s in train_sents]
 
@@ -100,16 +99,24 @@ if(False):
     )
     crf.fit(X_train, y_train)
     # Save model
-    with open('saved_model_CRF.pkl', 'wb') as fid:
+    with open(sys.argv[0], 'wb') as fid:
         cPickle.dump(crf, fid)
 else:
-    with open('saved_model_CRF.pkl', 'rb') as fid:
+    with open(sys.argv[1], 'rb') as fid:
         crf = cPickle.load(fid)
 
 # Single prediction for a word
-single_X_test = (X_test[0][0])
+# single_X_test = (X_test[0][0])
+#
+# y_pred = crf.predict_single(single_X_test)
 
-y_pred = crf.predict_single(single_X_test)
+# Single prediction for a sentence
+single_X_test = (X_test[150])
+y_pred = crf.predict(single_X_test)
 
-print len(single_X_test)
-print len(y_pred)
+# print len(single_X_test)
+# print len(y_pred)
+
+print single_X_test
+print '------------------------'
+print y_pred
