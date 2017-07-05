@@ -199,8 +199,8 @@ def sent2tokens(sent):
 
 # train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
 # test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
-train_sents = read_corpus_ner('gmb-2.2.0', '--core')
-test_sents = read_corpus_ner('gmb-2.2.0', '--core')
+# train_sents = read_corpus_ner('gmb-2.2.0', '--core')
+# test_sents = read_corpus_ner('gmb-2.2.0', '--core')
 
 # print('Sample sentences:')
 # print(test_sents[0])
@@ -215,11 +215,11 @@ test_sents = read_corpus_ner('gmb-2.2.0', '--core')
 # print()
 # print()
 
-X_train = [sent2features(s) for s in train_sents]
-y_train = [sent2labels(s) for s in train_sents]
-
-X_test = [sent2features(s) for s in test_sents]
-y_test = [sent2labels(s) for s in test_sents]
+# X_train = [sent2features(s) for s in train_sents]
+# y_train = [sent2labels(s) for s in train_sents]
+#
+# X_test = [sent2features(s) for s in test_sents]
+# y_test = [sent2labels(s) for s in test_sents]
 
 load = True
 
@@ -239,31 +239,31 @@ else:
     with open(sys.argv[1], 'rb') as fid:
         crf = cPickle.load(fid)
 
-labels = list(crf.classes_)
-labels.remove('O')
+# labels = list(crf.classes_)
+# labels.remove('O')
+#
+# y_pred = crf.predict(X_test)
 
-y_pred = crf.predict(X_test)
-
-print('Accuration:')
-print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
-print('-----------------')
-print('-----------------')
-print()
-print()
-
-print('Confusion matrix:')
-# group B and I results
-sorted_labels = sorted(
-    labels,
-    key=lambda name: (name[1:], name[0])
-)
-print(metrics.flat_classification_report(
-    y_test, y_pred, labels=sorted_labels, digits=3
-))
-print('-----------------')
-print('-----------------')
-print()
-print()
+# print('Accuration:')
+# print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
+# print('-----------------')
+# print('-----------------')
+# print()
+# print()
+#
+# print('Confusion matrix:')
+# # group B and I results
+# sorted_labels = sorted(
+#     labels,
+#     key=lambda name: (name[1:], name[0])
+# )
+# print(metrics.flat_classification_report(
+#     y_test, y_pred, labels=sorted_labels, digits=3
+# ))
+# print('-----------------')
+# print('-----------------')
+# print()
+# print()
 
 # print(test_sents[0])
 # for items in test_sents[0]:
@@ -281,3 +281,5 @@ featured_input = sent2features(pos_tagged_input)
 
 single_sentence_prediction = crf.predict_single(featured_input)
 print(single_sentence_prediction)
+
+# Kasi kasus disini, kalo dia location dibandingin ama apa, dkk
