@@ -19,6 +19,9 @@ import os
 import sys
 import collections
 
+import fetch_user_profile
+import google_search
+
 def to_conll_iob(annotated_sentence):
     """
     `annotated_sentence` = list of triplets [(w1, t1, iob1), ...]
@@ -280,6 +283,43 @@ featured_input = sent2features(pos_tagged_input)
 # print(featured_input)
 
 single_sentence_prediction = crf.predict_single(featured_input)
+print(tokenized_input)
 print(single_sentence_prediction)
 
-# Kasi kasus disini, kalo dia location dibandingin ama apa, dkk
+# Kasi kasus disini, kalo dia location dibandingin ama attribut mana aja di user profil, dkk
+user_dict = fetch_user_profile.get_data(sys.argv[3])
+predicted_sentence_cooccurence = []
+
+i = 0
+for ner_tag in single_sentence_prediction:
+    co_occurence = 0
+    if ("per" in ner_tag):
+        # Compare with full name
+        co_occurence = google_search.co_occurence(user_dict['full_name'], tokenized_input[i])
+    elif ("org" in ner_tag):
+        # Compare with education, work
+        co_occurence_1 = google_search.co_occurence(user_dict['education'], tokenized_input[i])
+        co_occurence_2 = google_search.co_occurence(user_dict['work'], tokenized_input[i])
+        if (co_occurence_1 > co_occurence_2):
+            co_occurence = co_occurence_1
+        else:
+            co_occurence = co_occurence_2
+    elif ("geo" in ner_tag):
+        # Compare with hometown_city, current_city,
+        co_occurence_1 = google_search.co_occurence(user_dict['education'], tokenized_input[i])
+        co_occurence_2 = google_search.co_occurence(user_dict['work'], tokenized_input[i])
+        if (co_occurence_1 > co_occurence_2):
+            co_occurence = co_occurence_1
+        else:
+            co_occurence = co_occurence_2
+
+    predicted_sentence_cooccurence.append(co_occurence)
+
+    i = i + 1
+
+print(predicted_sentence_cooccurence)
+
+# Ambil smua yang ke tagged_named_entity
+# Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
+
+# Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
