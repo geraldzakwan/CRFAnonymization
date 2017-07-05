@@ -70,8 +70,10 @@ def sent2labels(sent):
 def sent2tokens(sent):
     return [token for token, postag, label in sent]
 
-train_sents = list(nltk.corpus.conll2002.iob_sents('esp.train'))
-test_sents = list(nltk.corpus.conll2002.iob_sents('esp.testb'))
+print(nltk.corpus.conll2000.fileids())
+
+train_sents = list(nltk.corpus.conll2000.iob_sents('train.txt'))
+test_sents = list(nltk.corpus.conll2000.iob_sents('test.txt'))
 
 X_train = [sent2features(s) for s in train_sents]
 y_train = [sent2labels(s) for s in train_sents]
@@ -99,7 +101,7 @@ if(False):
     )
     crf.fit(X_train, y_train)
     # Save model
-    with open(sys.argv[0], 'wb') as fid:
+    with open(sys.argv[1], 'wb') as fid:
         cPickle.dump(crf, fid)
 else:
     with open(sys.argv[1], 'rb') as fid:
@@ -111,12 +113,43 @@ else:
 # y_pred = crf.predict_single(single_X_test)
 
 # Single prediction for a sentence
-single_X_test = (X_test[150])
-y_pred = crf.predict(single_X_test)
+# single_X_test = (X_test[150])
+# y_pred = crf.predict(single_X_test)
 
-# print len(single_X_test)
-# print len(y_pred)
+# print single_X_test
+# print '------------------------'
+# print y_pred
 
-print single_X_test
-print '------------------------'
-print y_pred
+y_pred = crf.predict(X_test)
+
+labels = list(crf.classes_)
+labels.remove('O')
+
+print('Accuration:')
+print(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=labels))
+print('-----------------')
+print('-----------------')
+print ''
+print ''
+
+print('Confusion matrix:')
+# group B and I results
+sorted_labels = sorted(
+    labels,
+    key=lambda name: (name[1:], name[0])
+)
+print(metrics.flat_classification_report(
+    y_test, y_pred, labels=sorted_labels, digits=3
+))
+print('-----------------')
+print('-----------------')
+print ''
+print ''
+
+# Single prediction for a sentence
+# single_X_test = (X_test[150])
+# single_y_pred = crf.predict(single_X_test)
+#
+# print single_X_test
+# print '------------------------'
+# print single_y_pred

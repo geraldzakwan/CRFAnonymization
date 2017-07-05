@@ -115,7 +115,7 @@ if(False):
     )
     crf.fit(X_train, y_train)
     # Save model
-    with open(sys.argv[0], 'wb') as fid:
+    with open(sys.argv[1], 'wb') as fid:
         cPickle.dump(crf, fid)
 else:
     with open(sys.argv[1], 'rb') as fid:
