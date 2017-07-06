@@ -25,6 +25,6 @@ def get_data(user_fullname):
 
     db.close()
 
-    print(ret_dict)
+    # print(ret_dict)
 
     return ret_dict
