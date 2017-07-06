@@ -116,34 +116,33 @@ while (i<len(iob_prediction)):
 for tup in ner_prediction:
     print(tup)
 
-# i = 0
-# for ner_tag in iob_prediction:
-#     co_occurence = 0
-#     if ("per" in ner_tag):
-#         # Compare with full name
-#         co_occurence = google_search.co_occurence(user_dict['full_name'], tokenized_input[i])
-#     elif ("org" in ner_tag):
-#         # Compare with education, work
-#         co_occurence_1 = google_search.co_occurence(user_dict['education'], tokenized_input[i])
-#         co_occurence_2 = google_search.co_occurence(user_dict['work'], tokenized_input[i])
-#         if (co_occurence_1 > co_occurence_2):
-#             co_occurence = co_occurence_1
-#         else:
-#             co_occurence = co_occurence_2
-#     elif ("geo" in ner_tag):
-#         # Compare with hometown_city, current_city,
-#         co_occurence_1 = google_search.co_occurence(user_dict['education'], tokenized_input[i])
-#         co_occurence_2 = google_search.co_occurence(user_dict['work'], tokenized_input[i])
-#         if (co_occurence_1 > co_occurence_2):
-#             co_occurence = co_occurence_1
-#         else:
-#             co_occurence = co_occurence_2
-#
-#     predicted_sentence_cooccurence.append(co_occurence)
-#
-#     i = i + 1
-#
-# print(predicted_sentence_cooccurence)
+i = 0
+for chunk_tuple in ner_prediction:
+    co_occurence = 0
+    # print(chunk_tuple[1])
+    if ("per" == chunk_tuple[1]):
+        # Compare with full name
+        co_occurence = google_search.co_occurence(user_dict['full_name'], chunk_tuple[0])
+    elif ("org" == chunk_tuple[1]):
+        # Compare with education, work
+        co_occurence_1 = google_search.co_occurence(user_dict['education'], chunk_tuple[0])
+        co_occurence_2 = google_search.co_occurence(user_dict['work'], chunk_tuple[0])
+        if (co_occurence_1 > co_occurence_2):
+            co_occurence = co_occurence_1
+        else:
+            co_occurence = co_occurence_2
+    elif ("geo" == chunk_tuple[1]):
+        # Compare with hometown_city, current_city,
+        co_occurence_1 = google_search.co_occurence(user_dict['education'], chunk_tuple[0])
+        co_occurence_2 = google_search.co_occurence(user_dict['work'], chunk_tuple[0])
+        if (co_occurence_1 > co_occurence_2):
+            co_occurence = co_occurence_1
+        else:
+            co_occurence = co_occurence_2
+
+    predicted_sentence_cooccurence.append(co_occurence)
+
+print(predicted_sentence_cooccurence)
 
 # Ambil smua yang ke tagged_named_entity
 # Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
