@@ -4,7 +4,8 @@
 import sys
 from apiclient.discovery import build
 
-api_key = 'AIzaSyDkSCA8agvst49gtKEjrxRnI57lCqV9vBM'
+# api_key = 'AIzaSyDkSCA8agvst49gtKEjrxRnI57lCqV9vBM'
+api_key = 'AIzaSyBB6XFgrejB0CwyDzbKPnabx62tcJQY_-k'
 cx_key = '013692161269702497108:vgnkfyixhmo'
 
 def get_total_results(word):

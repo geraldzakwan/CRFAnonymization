@@ -23,6 +23,9 @@ import fetch_user_profile
 import google_search
 import access_gmb_corpus
 import feature_extraction
+import anonymization
+import postprocessing
+import sentence_similarity
 
 # train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
 # test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
@@ -113,38 +116,49 @@ while (i<len(iob_prediction)):
         ner_prediction.append((curr_items, ner_tag))
     i = i + 1
 
-for tup in ner_prediction:
-    print(tup)
+# for tup in ner_prediction:
+#     print(tup)
 
 # Ambil smua yang ke tagged_named_entity
 # Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
 
-i = 0
-for chunk_tuple in ner_prediction:
-    co_occurence = 0
-    # print(chunk_tuple[1])
-    if ("per" == chunk_tuple[1]):
-        # Compare with full name
-        co_occurence = google_search.co_occurence(user_dict['full_name'], chunk_tuple[0])
-    elif ("org" == chunk_tuple[1]):
-        # Compare with education, work
-        co_occurence_1 = google_search.co_occurence(user_dict['education'], chunk_tuple[0])
-        co_occurence_2 = google_search.co_occurence(user_dict['work'], chunk_tuple[0])
-        if (co_occurence_1 > co_occurence_2):
-            co_occurence = co_occurence_1
-        else:
-            co_occurence = co_occurence_2
-    elif ("geo" == chunk_tuple[1]):
-        # Compare with hometown_city, current_city,
-        co_occurence_1 = google_search.co_occurence(user_dict['hometown_city'], chunk_tuple[0])
-        co_occurence_2 = google_search.co_occurence(user_dict['current_city'], chunk_tuple[0])
-        if (co_occurence_1 > co_occurence_2):
-            co_occurence = co_occurence_1
-        else:
-            co_occurence = co_occurence_2
-
-    predicted_sentence_cooccurence.append(co_occurence)
-
-print(predicted_sentence_cooccurence)
+# i = 0
+# for chunk_tuple in ner_prediction:
+#     co_occurence = 0
+#     # print(chunk_tuple[1])
+#     if ("per" == chunk_tuple[1]):
+#         # Compare with full name
+#         co_occurence = google_search.co_occurence(user_dict['full_name'], chunk_tuple[0])
+#     elif ("org" == chunk_tuple[1]):
+#         # Compare with education, work
+#         co_occurence_1 = google_search.co_occurence(user_dict['education'], chunk_tuple[0])
+#         co_occurence_2 = google_search.co_occurence(user_dict['work'], chunk_tuple[0])
+#         if (co_occurence_1 > co_occurence_2):
+#             co_occurence = co_occurence_1
+#         else:
+#             co_occurence = co_occurence_2
+#     elif ("geo" == chunk_tuple[1]):
+#         # Compare with hometown_city, current_city,
+#         co_occurence_1 = google_search.co_occurence(user_dict['hometown_city'], chunk_tuple[0])
+#         co_occurence_2 = google_search.co_occurence(user_dict['current_city'], chunk_tuple[0])
+#         if (co_occurence_1 > co_occurence_2):
+#             co_occurence = co_occurence_1
+#         else:
+#             co_occurence = co_occurence_2
+#
+#     predicted_sentence_cooccurence.append(co_occurence)
+#
+# print(predicted_sentence_cooccurence)
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
+
+anonymize_predicted_sentence = anonymization.simple_anonymization(ner_prediction)
+final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentence)
+
+print('Original text : ')
+print(text_input)
+print('Anonymized text : ')
+print(final_sentence)
+
+print('Similarity : ')
+print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))

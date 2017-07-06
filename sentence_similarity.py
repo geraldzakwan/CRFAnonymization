@@ -1,7 +1,7 @@
 # References :
 #
-# This algorithm is proposed by Mihalcea et al. in the paper “Corpus-based and Knowledge-based Measures
-# of Text Semantic Similarity” (https://www.aaai.org/Papers/AAAI/2006/AAAI06-123.pdf)
+# This algorithm is proposed by Mihalcea et al. in the paper "Corpus-based and Knowledge-based Measures
+# of Text Semantic Similarity" (https://www.aaai.org/Papers/AAAI/2006/AAAI06-123.pdf)
 
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet as wn
