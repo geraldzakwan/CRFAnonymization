@@ -116,6 +116,9 @@ while (i<len(iob_prediction)):
 for tup in ner_prediction:
     print(tup)
 
+# Ambil smua yang ke tagged_named_entity
+# Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
+
 i = 0
 for chunk_tuple in ner_prediction:
     co_occurence = 0
@@ -143,8 +146,5 @@ for chunk_tuple in ner_prediction:
     predicted_sentence_cooccurence.append(co_occurence)
 
 print(predicted_sentence_cooccurence)
-
-# Ambil smua yang ke tagged_named_entity
-# Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
