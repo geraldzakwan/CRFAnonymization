@@ -133,8 +133,8 @@ for chunk_tuple in ner_prediction:
             co_occurence = co_occurence_2
     elif ("geo" == chunk_tuple[1]):
         # Compare with hometown_city, current_city,
-        co_occurence_1 = google_search.co_occurence(user_dict['education'], chunk_tuple[0])
-        co_occurence_2 = google_search.co_occurence(user_dict['work'], chunk_tuple[0])
+        co_occurence_1 = google_search.co_occurence(user_dict['hometown_city'], chunk_tuple[0])
+        co_occurence_2 = google_search.co_occurence(user_dict['current_city'], chunk_tuple[0])
         if (co_occurence_1 > co_occurence_2):
             co_occurence = co_occurence_1
         else:
