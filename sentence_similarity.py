@@ -59,7 +59,11 @@ def sentence_similarity(sentence1, sentence2):
             count += 1
 
     # Average the values
-    score /= count
+    # Check bug count = 0
+    if (count == 0):
+        score = -1
+    else:
+        score /= count
     return score
 
 def symmetric_sentence_similarity(sentence1, sentence2):

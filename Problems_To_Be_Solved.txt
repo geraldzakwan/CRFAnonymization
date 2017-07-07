@@ -1,8 +1,11 @@
 - Identifikasi private locational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
-- Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR)
+- Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
 - Nentuin threshold untuk co-occurence metrics (MINGGU DEPAN HARUS KELAR)
 - Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU DEPAN HARUS KELAR)
 - Rapiin program, satuin ke API (MINGGU DEPAN HARUS KELAR)
 - Normalizing text (ato bisa jadi asumsi/prerequisite input MINGGU DEPAN HARUS KELAR)
 - Improve accuracy ner (opsional)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
+
+Bug :
+Count bisa 0 di sentence_similarity, jadinya float division by zero
