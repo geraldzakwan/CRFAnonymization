@@ -1,3 +1,5 @@
+# https://noisy-text.github.io/norm-shared-task.html
+
 # import matplotlib.pyplot as plt
 # plt.style.use('ggplot')
 
