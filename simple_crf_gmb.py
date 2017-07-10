@@ -99,7 +99,8 @@ user_dict = fetch_user_profile.get_data(sys.argv[3])
 # print(user_dict)
 predicted_sentence_cooccurence = []
 
-print(iob_prediction)
+# Print prediction in IOB format
+# print(iob_prediction)
 
 # Sebelum ini harusnya preprocessing dulu, digabungin semua yang B sama I
 # List of tuple (string, ner)
