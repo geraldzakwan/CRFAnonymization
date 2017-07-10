@@ -30,6 +30,7 @@ import postprocessing
 import sentence_similarity
 import sample_rule_based
 import normalization
+import spell_checker
 
 # train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
 # test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
@@ -86,6 +87,11 @@ else:
 
 text_input = sys.argv[2]
 tokenized_input = nltk.word_tokenize(text_input)
+
+# Spell checking disini, tapi ternyata yang named entity ikut keubah jadi jangan
+# tokenized_input = spell_checker.input_spell_correction(tokenized_input)
+# print(tokenized_input)
+
 # stemmed_tokenized_input = normalization.stem_list_of_token(tokenized_input)
 # print(stemmed_tokenized_input)
 # pos_tagged_input = nltk.pos_tag(stemmed_tokenized_input)
@@ -97,6 +103,11 @@ featured_input = feature_extraction.sent2features(pos_tagged_input)
 iob_prediction = crf.predict_single(featured_input)
 # print(tokenized_input)
 # print(iob_prediction)
+
+# Spell checking disini aja setelah predict named entity
+tokenized_input = spell_checker.input_spell_correction(tokenized_input, iob_prediction)
+print('Spell checking')
+print(tokenized_input)
 
 # Kasi kasus disini, kalo dia location dibandingin ama attribut mana aja di user profil, dkk
 user_dict = fetch_user_profile.get_data(sys.argv[3])
@@ -220,3 +231,4 @@ print(truly_private_org_candidate_phrases)
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Jakarta. I work at Qontak company." "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Currently, I am living at San Frasisco Bay Area. I am now working at Palantyr Software." "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Last month, I went to Bali for vacation" "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Lastt monntth, Iii weennt to Bali for vacationnn" "Geraldi Dzakwan"

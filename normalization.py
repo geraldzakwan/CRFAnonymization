@@ -30,7 +30,7 @@ def lemmatize_list_of_token(ner_prediction, pos_tag_list):
         if(token_tuple[1] == 'O'):
             tag = tag_converter.penn_to_wn(pos_tag_list[i])
             lemmatized_token = wordnet_lemmatizer.lemmatize(token_tuple[0], pos=tag)
-            print(lemmatized_token)
+            # print(lemmatized_token)
         else:
             lemmatized_token = token_tuple[0]
         i = i + 1

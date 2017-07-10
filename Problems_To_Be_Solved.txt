@@ -1,6 +1,5 @@
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
-- Normalizing text (ato bisa jadi asumsi/prerequisite input MINGGU INI HARUS KELAR). Perlu kasi pos tag info ke lemmatizer.
 - Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU INI HARUS KELAR)
 - Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR)
 - Rapiin program, satuin ke API (MINGGU INI HARUS KELAR)
@@ -11,3 +10,5 @@ Bug :
 Count bisa 0 di sentence_similarity, jadinya float division by zero
 
 - Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
+- Normalizing text/spelling check & correction (DONE).
+- Perlu kasi pos tag info ke lemmatizer (DONE).
