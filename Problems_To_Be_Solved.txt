@@ -12,3 +12,11 @@ Count bisa 0 di sentence_similarity, jadinya float division by zero
 - Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
 - Normalizing text/spelling check & correction (DONE).
 - Perlu kasi pos tag info ke lemmatizer (DONE).
+
+Masalah :
+
+- Kalo spell checking sebelum IOB prediction, named entity keganti
+- Kalo sesudah, ada kemungkinan falsed named entity :
+  Contoh : Lasstt month, I went to Bali for vacationn
+  Lasstt jadi PERSON
+- Kemungkinan solusi : Tetep sebelum, catet index iob, ganti lagi
