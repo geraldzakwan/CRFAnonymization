@@ -173,16 +173,16 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
-print('Step 1 : ')
+print('Step 3 : ')
 print(loc_candidate_phrases)
 non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
-print('Step 2 : ')
+print('Step 4 : ')
 print(non_neg_loc_candidate_phrases)
 private_loc_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_loc_candidate_phrases)
-print('Step 3 : ')
+print('Step 5 : ')
 print(private_loc_candidate_phrases)
 truly_private_loc_candidate_phrases = sample_rule_based.check_private_locational_verb(private_loc_candidate_phrases)
-print('Step 4 : ')
+print('Step 6 : ')
 print(truly_private_loc_candidate_phrases)
 
 # Sample run
