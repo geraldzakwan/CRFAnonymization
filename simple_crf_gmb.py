@@ -173,10 +173,20 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+print('Step 1 : ')
 print(loc_candidate_phrases)
 non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
+print('Step 2 : ')
 print(non_neg_loc_candidate_phrases)
+private_loc_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_loc_candidate_phrases)
+print('Step 3 : ')
+print(private_loc_candidate_phrases)
+truly_private_loc_candidate_phrases = sample_rule_based.check_private_locational_verb(private_loc_candidate_phrases)
+print('Step 4 : ')
+print(truly_private_loc_candidate_phrases)
 
 # Sample run
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl 'Yes, I currently stay in Japan for six weeks to do research internship at Gifu National College of Technology' 'Geraldi Dzakwan'
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "How many time I'll tell you that I'm not from California?" "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I really want to fly out to Los Angeles and meet all the amazing people/artists out there." "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Seattle, do you know what station is showing your new show?" "Geraldi Dzakwan"

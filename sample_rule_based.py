@@ -1,5 +1,6 @@
 import sys
 import nltk
+import MySQLdb
 
 # text_input = sys.argv[1]
 # tokenized_input = nltk.word_tokenize(text_input)
@@ -107,13 +108,103 @@ def identify_candidate_private_organizational_phrases(ner_prediction):
 def check_negative_phrases(list_candidate_phrases):
     candidate_phrases_without_negative = []
 
-    for candidate_phrases in list_candidate_phrases:
-        is_negative = False
-        for token in candidate_phrases:
-            if(token == "no" or token == "not" or token =="never"):
-                is_negative = True
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
 
-        if(not is_negative):
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM negative_words';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in list_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(not is_inside):
             candidate_phrases_without_negative.append(candidate_phrases)
 
+        # is_negative = False
+        # for token in candidate_phrases:
+        #     if(token == "no" or token == "not" or token =="never"):
+        #         is_negative = True
+        #
+        # if(not is_negative):
+        #     candidate_phrases_without_negative.append(candidate_phrases)
+
     return candidate_phrases_without_negative
+
+def check_non_private_locational_verb(non_neg_loc_candidate_phrases):
+    private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM non_private_locational_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in non_neg_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(not is_inside):
+            private_loc_candidate_phrases.append(candidate_phrases)
+
+    return private_loc_candidate_phrases
+
+def check_private_locational_verb(private_loc_candidate_phrases):
+    truly_private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM private_locational_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in private_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(is_inside):
+            truly_private_loc_candidate_phrases.append(candidate_phrases)
+
+    return truly_private_loc_candidate_phrases
