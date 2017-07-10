@@ -1,12 +1,13 @@
-- Identifikasi private locational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
-- Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
-- Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU DEPAN HARUS KELAR)
-- Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU DEPAN HARUS KELAR)
-- Rapiin program, satuin ke API (MINGGU DEPAN HARUS KELAR)
-- Normalizing text (ato bisa jadi asumsi/prerequisite input MINGGU DEPAN HARUS KELAR)
+- Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
+- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
+- Normalizing text (ato bisa jadi asumsi/prerequisite input MINGGU INI HARUS KELAR)
+- Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU INI HARUS KELAR)
+- Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR)
+- Rapiin program, satuin ke API (MINGGU INI HARUS KELAR)
 - Improve accuracy ner (opsional)
-- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (opsional)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
 
 Bug :
 Count bisa 0 di sentence_similarity, jadinya float division by zero
+
+- Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)

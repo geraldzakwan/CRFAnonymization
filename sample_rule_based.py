@@ -208,3 +208,67 @@ def check_private_locational_verb(private_loc_candidate_phrases):
             truly_private_loc_candidate_phrases.append(candidate_phrases)
 
     return truly_private_loc_candidate_phrases
+
+def check_non_private_organizational_verb(non_neg_loc_candidate_phrases):
+    private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM non_private_organizational_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in non_neg_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(not is_inside):
+            private_loc_candidate_phrases.append(candidate_phrases)
+
+    return private_loc_candidate_phrases
+
+def check_private_organizational_verb(private_loc_candidate_phrases):
+    truly_private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM private_organizational_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in private_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(is_inside):
+            truly_private_loc_candidate_phrases.append(candidate_phrases)
+
+    return truly_private_loc_candidate_phrases

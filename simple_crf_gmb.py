@@ -29,6 +29,7 @@ import anonymization
 import postprocessing
 import sentence_similarity
 import sample_rule_based
+import normalization
 
 # train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
 # test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
@@ -85,6 +86,9 @@ else:
 
 text_input = sys.argv[2]
 tokenized_input = nltk.word_tokenize(text_input)
+# stemmed_tokenized_input = normalization.stem_list_of_token(tokenized_input)
+# print(stemmed_tokenized_input)
+# pos_tagged_input = nltk.pos_tag(stemmed_tokenized_input)
 pos_tagged_input = nltk.pos_tag(tokenized_input)
 # print(pos_tagged_input)
 featured_input = feature_extraction.sent2features(pos_tagged_input)
@@ -171,22 +175,40 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 # print('Similarity : ')
 # print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))
 
+stemmed_tokenized_output = normalization.stem_list_of_token(ner_prediction)
+print(stemmed_tokenized_output)
+
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
-print('Step 3 : ')
+print('Step 3a : ')
 print(loc_candidate_phrases)
 non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
-print('Step 4 : ')
+print('Step 4a : ')
 print(non_neg_loc_candidate_phrases)
 private_loc_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_loc_candidate_phrases)
-print('Step 5 : ')
+print('Step 5a : ')
 print(private_loc_candidate_phrases)
 truly_private_loc_candidate_phrases = sample_rule_based.check_private_locational_verb(private_loc_candidate_phrases)
-print('Step 6 : ')
+print('Step 6a : ')
 print(truly_private_loc_candidate_phrases)
+
+org_candidate_phrases = sample_rule_based.identify_candidate_private_organizational_phrases(ner_prediction)
+print('Step 3b : ')
+print(org_candidate_phrases)
+non_neg_org_candidate_phrases = sample_rule_based.check_negative_phrases(org_candidate_phrases)
+print('Step 4b : ')
+print(non_neg_org_candidate_phrases)
+private_org_candidate_phrases = sample_rule_based.check_non_private_organizational_verb(non_neg_org_candidate_phrases)
+print('Step 5b : ')
+print(private_org_candidate_phrases)
+truly_private_org_candidate_phrases = sample_rule_based.check_private_organizational_verb(private_org_candidate_phrases)
+print('Step 6b : ')
+print(truly_private_org_candidate_phrases)
 
 # Sample run
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl 'Yes, I currently stay in Japan for six weeks to do research internship at Gifu National College of Technology' 'Geraldi Dzakwan'
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "How many time I'll tell you that I'm not from California?" "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I really want to fly out to Los Angeles and meet all the amazing people/artists out there." "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Seattle, do you know what station is showing your new show?" "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Jakarta. I work at Qontak company." "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Currently, I am living at San Frasisco Bay Area. I am now working at Palantyr Software." "Geraldi Dzakwan"
