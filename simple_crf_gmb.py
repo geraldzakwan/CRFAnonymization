@@ -99,7 +99,7 @@ user_dict = fetch_user_profile.get_data(sys.argv[3])
 # print(user_dict)
 predicted_sentence_cooccurence = []
 
-# print(iob_prediction)
+print(iob_prediction)
 
 # Sebelum ini harusnya preprocessing dulu, digabungin semua yang B sama I
 # List of tuple (string, ner)
@@ -114,7 +114,8 @@ while (i<len(iob_prediction)):
         while("I" in iob_prediction[i]):
             curr_items = curr_items + " " + tokenized_input[i]
             i = i + 1
-            if(i >= len(iob_prediction)-1):
+            # Buggy for end of sentence : if(i >= len(iob_prediction)-1):
+            if(i >= len(iob_prediction)):
                 break
         ner_prediction.append((curr_items, ner_tag))
         i = i - 1
@@ -171,3 +172,6 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+
+# Sample run
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl 'Yes, I currently stay in Japan for six weeks to do research internship at Gifu National College of Technology' 'Geraldi Dzakwan'

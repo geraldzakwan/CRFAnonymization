@@ -32,7 +32,7 @@ def identify_candidate_private_locational_phrases(ner_prediction):
             dot_index_list.append(i)
 
     print(list_of_ner)
-    print(loc_index_list)
+    # print(loc_index_list)
     print(list_of_token)
-    print(i_index_list)
-    print(dot_index_list)
+    # print(i_index_list)
+    # print(dot_index_list)

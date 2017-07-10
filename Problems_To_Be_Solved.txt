@@ -5,7 +5,7 @@
 - Rapiin program, satuin ke API (MINGGU DEPAN HARUS KELAR)
 - Normalizing text (ato bisa jadi asumsi/prerequisite input MINGGU DEPAN HARUS KELAR)
 - Improve accuracy ner (opsional)
-- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (opsional) 
+- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (opsional)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
 
 Bug :
