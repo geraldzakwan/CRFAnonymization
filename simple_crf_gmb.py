@@ -90,7 +90,7 @@ tokenized_input = nltk.word_tokenize(text_input)
 # print(stemmed_tokenized_input)
 # pos_tagged_input = nltk.pos_tag(stemmed_tokenized_input)
 pos_tagged_input = nltk.pos_tag(tokenized_input)
-# print(pos_tagged_input)
+print(pos_tagged_input)
 featured_input = feature_extraction.sent2features(pos_tagged_input)
 # print(featured_input)
 
@@ -176,7 +176,13 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 # print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))
 
 stemmed_tokenized_output = normalization.stem_list_of_token(ner_prediction)
-print(stemmed_tokenized_output)
+# Yang ini perlu kasi pos tagnya
+# pos_tagged_list = []
+# for tuple_token in pos_tagged_input:
+#     pos_tagged_list.append(tuple_token[1])
+#
+# normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
+# print(normalized_tokenized_output)
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
@@ -212,3 +218,4 @@ print(truly_private_org_candidate_phrases)
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Seattle, do you know what station is showing your new show?" "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "I live in Jakarta. I work at Qontak company." "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Currently, I am living at San Frasisco Bay Area. I am now working at Palantyr Software." "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Last month, I went to Bali for vacation" "Geraldi Dzakwan"
