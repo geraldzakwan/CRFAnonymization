@@ -172,7 +172,11 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 # print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
-sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+print(loc_candidate_phrases)
+non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
+print(non_neg_loc_candidate_phrases)
 
 # Sample run
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl 'Yes, I currently stay in Japan for six weeks to do research internship at Gifu National College of Technology' 'Geraldi Dzakwan'
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "How many time I'll tell you that I'm not from California?" "Geraldi Dzakwan"
