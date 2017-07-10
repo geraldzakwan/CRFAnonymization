@@ -90,7 +90,7 @@ tokenized_input = nltk.word_tokenize(text_input)
 # print(stemmed_tokenized_input)
 # pos_tagged_input = nltk.pos_tag(stemmed_tokenized_input)
 pos_tagged_input = nltk.pos_tag(tokenized_input)
-print(pos_tagged_input)
+# print(pos_tagged_input)
 featured_input = feature_extraction.sent2features(pos_tagged_input)
 # print(featured_input)
 
@@ -177,15 +177,16 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 
 stemmed_tokenized_output = normalization.stem_list_of_token(ner_prediction)
 # Yang ini perlu kasi pos tagnya
-# pos_tagged_list = []
-# for tuple_token in pos_tagged_input:
-#     pos_tagged_list.append(tuple_token[1])
-#
-# normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
-# print(normalized_tokenized_output)
+pos_tagged_list = []
+for tuple_token in pos_tagged_input:
+    pos_tagged_list.append(tuple_token[1])
+
+normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
+print(normalized_tokenized_output)
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
-loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+# loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
+loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(normalized_tokenized_output)
 print('Step 3a : ')
 print(loc_candidate_phrases)
 non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
