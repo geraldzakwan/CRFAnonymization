@@ -18,9 +18,8 @@ DONE :
 
 Masalah :
 
-- Kalo spell checking sebelum IOB prediction, named entity keganti
-- Kalo sesudah, ada kemungkinan falsed named entity :
-  Contoh : Lasstt month, I went to Bali for vacationn
-  Lasstt jadi PERSON
+- POS TAG NYA HARUS NGIKUT ABIS DI PREDICT DAMN
+- KEKNYA HARUSNYA STEM AMA LEMMATIZED DI AWAL
+
 - Kemungkinan solusi : Tetep sebelum, catet index iob, ganti lagi
 - Kadang lemma motong kata basic juga, jadi ngaco

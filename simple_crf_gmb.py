@@ -31,6 +31,7 @@ import sentence_similarity
 import sample_rule_based
 import normalization
 import spell_checker
+import temporal_phrase_tagger
 
 # train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
 # test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
@@ -96,6 +97,18 @@ tokenized_input = nltk.word_tokenize(text_input)
 # print(stemmed_tokenized_input)
 # pos_tagged_input = nltk.pos_tag(stemmed_tokenized_input)
 pos_tagged_input = nltk.pos_tag(tokenized_input)
+
+# Normalized here
+stemmed_tokenized_output = normalization.stem_list_of_token_awal(pos_tagged_input)
+print('Stemmed: ', stemmed_tokenized_output)
+
+normalized_tokenized_output = normalization.lemmatize_list_of_token_awal(stemmed_tokenized_output)
+
+print('Lemmatized: ', normalized_tokenized_output)
+sys.exit()
+
+# print('Pos tagged input:')
+# print(pos_tagged_input)
 # print(pos_tagged_input)
 featured_input = feature_extraction.sent2features(pos_tagged_input)
 # print(featured_input)
@@ -187,15 +200,13 @@ final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentenc
 # print('Similarity : ')
 # print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))
 
-stemmed_tokenized_output = normalization.stem_list_of_token(ner_prediction)
-# Yang ini perlu kasi pos tagnya
-pos_tagged_list = []
-for tuple_token in pos_tagged_input:
-    pos_tagged_list.append(tuple_token[1])
-
-normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
+# print('Stemmed:')
+# print(stemmed_tokenized_output)
+# normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
 # normalized_tokenized_output = stemmed_tokenized_output
-print(normalized_tokenized_output)
+normalized_tokenized_output = ner_prediction
+# print('Lemmatized:')
+# print(normalized_tokenized_output)
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 # loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)

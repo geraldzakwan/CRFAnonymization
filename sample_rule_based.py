@@ -38,8 +38,9 @@ def identify_candidate_private_locational_phrases(ner_prediction):
         if(list_of_token[i] == "."):
             dot_index_list.append(i)
 
-    print(list_of_ner)
-    print(list_of_token)
+    # print(list_of_ner)
+    # print(list_of_token)
+
     # print(loc_index_list)
     # print(org_index_list)
     # print(i_index_list)
