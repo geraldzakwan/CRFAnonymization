@@ -105,7 +105,8 @@ print('Stemmed: ', stemmed_tokenized_output)
 normalized_tokenized_output = normalization.lemmatize_list_of_token_awal(stemmed_tokenized_output)
 
 print('Lemmatized: ', normalized_tokenized_output)
-sys.exit()
+pos_tagged_input = normalized_tokenized_output
+# sys.exit()
 
 # print('Pos tagged input:')
 # print(pos_tagged_input)
@@ -136,13 +137,16 @@ predicted_sentence_cooccurence = []
 ner_prediction = []
 curr_items = ""
 i = 0
+
 while (i<len(iob_prediction)):
     if("B" in iob_prediction[i]):
         ner_tag = iob_prediction[i][2:]
-        curr_items = tokenized_input[i]
+        # curr_items = tokenized_input[i]
+        curr_items = pos_tagged_input[i][0]
         i = i + 1
         while("I" in iob_prediction[i]):
-            curr_items = curr_items + " " + tokenized_input[i]
+            # curr_items = curr_items + " " + tokenized_input[i]
+            curr_items = curr_items + " " + pos_tagged_input[i][0] 
             i = i + 1
             # Buggy for end of sentence : if(i >= len(iob_prediction)-1):
             if(i >= len(iob_prediction)):
@@ -150,7 +154,8 @@ while (i<len(iob_prediction)):
         ner_prediction.append((curr_items, ner_tag))
         i = i - 1
     else:
-        curr_items = tokenized_input[i]
+        # curr_items = tokenized_input[i]
+        curr_items = pos_tagged_input[i][0]
         ner_tag = iob_prediction[i]
         ner_prediction.append((curr_items, ner_tag))
     i = i + 1
