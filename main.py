@@ -190,6 +190,21 @@ def identify_private_organizational_phrases(normalized_tokenized_output):
     print('Step 6b : ')
     print(truly_private_org_candidate_phrases)
 
+def identify_private_temporal_phrases(pos_tagged_input):
+    message = ""
+    i = 0
+    for tuples in pos_tagged_input:
+        message = message + tuples[0]
+        i = i + 1
+        if (i < len(pos_tagged_input)):
+            message = message + " "
+
+    message = temporal_phrase_tagger.do_temporal_tag(message)
+    return message
+
+def identify_private_personal_phrases():
+    return 'TBD'
+
 if __name__ == '__main__':
     # python main.py load save_model_crf_gmb_dua_kali.pkl "On June 24th, I went to Bali for vacation" "Geraldi Dzakwan"
     if(len(sys.argv) < 5):
@@ -210,6 +225,18 @@ if __name__ == '__main__':
     predicted_sentence_cooccurence = co_occurence_calculation(sys.argv[4], ner_prediction)
 
     print(pos_tagged_input)
+    print('----------')
     print(iob_prediction)
+    print('----------')
     print(ner_prediction)
+    print('----------')
     print(predicted_sentence_cooccurence)
+    print('----------')
+    identify_private_locational_phrases(ner_prediction)
+    print('----------')
+    identify_private_organizational_phrases(ner_prediction)
+    print('----------')
+    identify_private_temporal_phrases(pos_tagged_input)
+
+    # Ntar disatuin ama threshold dan co-occurence yang LOC sama ORG besok
+    # PERSON pikirin lagi

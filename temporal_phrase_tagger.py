@@ -384,7 +384,7 @@ def demo():
     text = nltk.corpus.abc.raw('rural.txt')[:10000]
     print tag(text)
 
-def demo2(text):
+def do_temporal_tag(text):
     print tag(text)
 
 if __name__ == '__main__':
