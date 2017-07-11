@@ -5,17 +5,21 @@ import re
 import string
 import os
 import sys
+import nltk
 
 # Requires eGenix.com mx Base Distribution
 # http://www.egenix.com/products/python/mxBase/
-try:
-    from mx.DateTime import *
-except ImportError:
-    print """
-Requires eGenix.com mx Base Distribution
-http://www.egenix.com/products/python/mxBase/"""
+# try:
+#     from mx.DateTime import *
+# except ImportError:
+#     print """
+# Requires eGenix.com mx Base Distribution
+# http://www.egenix.com/products/python/mxBase/"""
 
 # Predefined strings.
+prep_day = "(on)"
+prep_hour = "(at)"
+hour_desc = "(AM|PM|am|pm|a.m.|p.m.|A.M.|P.M.|a.m|p.m|A.M|P.M)"
 numbers = "(^a(?=\s)|one|two|three|four|five|six|seven|eight|nine|ten| \
           eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen| \
           eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty| \
@@ -32,12 +36,27 @@ iso = "\d+[/-]\d+[/-]\d+ \d+:\d+:\d+\.\d+"
 year = "((?<=\s)\d{4}|^\d{4})"
 regxp1 = "((\d+|(" + numbers + "[-\s]?)+) " + dmy + "s? " + exp1 + ")"
 regxp2 = "(" + exp2 + " (" + dmy + "|" + week_day + "|" + month + "))"
+regxp3 = prep_day + " " + day
+regxp4 = prep_hour + " " + numbers + " " + hour_desc
 
 reg1 = re.compile(regxp1, re.IGNORECASE)
 reg2 = re.compile(regxp2, re.IGNORECASE)
 reg3 = re.compile(rel_day, re.IGNORECASE)
 reg4 = re.compile(iso)
 reg5 = re.compile(year)
+reg6 = re.compile(regxp3, re.IGNORECASE)
+reg7 = re.compile(regxp4, re.IGNORECASE)
+
+def concatenate_tuple_to_str(tuple_list):
+    concatenated_str = ""
+
+    tuple_length = len(tuple_list)
+    for i in range(0, tuple_length):
+        concatenated_str = concatenated_str + tuple_list[i]
+        if (i < tuple_length - 1):
+            concatenated_str = concatenated_str + " "
+
+    return concatenated_str
 
 def tag(text):
 
@@ -71,6 +90,19 @@ def tag(text):
     found = reg5.findall(text)
     for timex in found:
         timex_found.append(timex)
+
+    # Day
+    found = reg6.findall(text)
+    print(found)
+    for timex in found:
+        print(timex)
+        # print(concatenate_tuple_to_str(timex))
+        timex_found.append(concatenate_tuple_to_str(timex))
+
+    # Hour
+    found = reg7.findall(text)
+    for timex in found:
+        timex_found.append(concatenate_tuple_to_str(timex))
 
     # Tag only temporal expressions which haven't been tagged.
     for timex in timex_found:
@@ -349,9 +381,11 @@ def ground(tagged_text, base_date):
 ####
 
 def demo():
-    import nltk
     text = nltk.corpus.abc.raw('rural.txt')[:10000]
     print tag(text)
 
+def demo2(text):
+    print tag(text)
+
 if __name__ == '__main__':
-    demo()
+    demo2(sys.argv[1])
