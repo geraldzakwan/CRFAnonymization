@@ -9,6 +9,8 @@
 Bug :
 Count bisa 0 di sentence_similarity, jadinya float division by zero
 
+DONE :
+
 - Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
 - Normalizing text/spelling check & correction (DONE).
 - Perlu kasi pos tag info ke lemmatizer (DONE).
@@ -20,3 +22,4 @@ Masalah :
   Contoh : Lasstt month, I went to Bali for vacationn
   Lasstt jadi PERSON
 - Kemungkinan solusi : Tetep sebelum, catet index iob, ganti lagi
+- Kadang lemma motong kata basic juga, jadi ngaco
