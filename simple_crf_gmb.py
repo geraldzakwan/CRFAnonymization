@@ -105,9 +105,10 @@ iob_prediction = crf.predict_single(featured_input)
 # print(iob_prediction)
 
 # Spell checking disini aja setelah predict named entity
-tokenized_input = spell_checker.input_spell_correction(tokenized_input, iob_prediction)
-print('Spell checking')
-print(tokenized_input)
+# Kadang masih sering error ini
+# tokenized_input = spell_checker.input_spell_correction(tokenized_input, iob_prediction)
+# print('Spell checking')
+# print(tokenized_input)
 
 # Kasi kasus disini, kalo dia location dibandingin ama attribut mana aja di user profil, dkk
 user_dict = fetch_user_profile.get_data(sys.argv[3])
@@ -193,6 +194,7 @@ for tuple_token in pos_tagged_input:
     pos_tagged_list.append(tuple_token[1])
 
 normalized_tokenized_output = normalization.lemmatize_list_of_token(stemmed_tokenized_output, pos_tagged_list)
+# normalized_tokenized_output = stemmed_tokenized_output
 print(normalized_tokenized_output)
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
@@ -232,3 +234,4 @@ print(truly_private_org_candidate_phrases)
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Currently, I am living at San Frasisco Bay Area. I am now working at Palantyr Software." "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Last month, I went to Bali for vacation" "Geraldi Dzakwan"
 # python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "Lastt monntth, Iii weennt to Bali for vacationnn" "Geraldi Dzakwan"
+# python simple_crf_gmb.py save_model_crf_gmb_dua_kali.pkl "On June 24th, Ii weennt to Bali for vacationnn" "Geraldi Dzakwan"

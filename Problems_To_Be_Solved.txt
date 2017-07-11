@@ -1,6 +1,7 @@
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
 - Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU INI HARUS KELAR)
+- PERSON GIMANA
 - Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR)
 - Rapiin program, satuin ke API (MINGGU INI HARUS KELAR)
 - Improve accuracy ner (opsional)
