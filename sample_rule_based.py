@@ -106,6 +106,47 @@ def identify_candidate_private_organizational_phrases(ner_prediction):
 
     return org_candidate_phrases
 
+def identify_candidate_private_personal_phrases(ner_prediction):
+    list_of_ner = [item[1] for item in ner_prediction]
+    list_of_token = [item[0] for item in ner_prediction]
+
+    # List all person
+    per_index_list = []
+    for i in range(0, len(list_of_ner)):
+        if(list_of_ner[i] == "per"):
+            per_index_list.append(i)
+
+    # List all token 'I'
+    i_index_list = []
+    for i in range(0, len(list_of_token)):
+        if(list_of_token[i] == "I" or list_of_token[i] == "i" or list_of_token[i] == "My" or list_of_token[i] == "my"):
+            i_index_list.append(i)
+
+    # List all titik
+    dot_index_list = []
+    for i in range(0, len(list_of_token)):
+        if(list_of_token[i] == "."):
+            dot_index_list.append(i)
+
+    per_candidate_phrases = []
+
+    for idx_org in per_index_list:
+        for idx_i in i_index_list:
+            if(idx_i < idx_org):
+                # Cek apakah kepotong titik antara I/My dengan person
+                is_cut = False
+                for idx_dot in dot_index_list:
+                    if(idx_dot > idx_i and idx_dot < idx_org):
+                        is_cut = True
+
+                if(not is_cut):
+                    token_list = []
+                    for i in range(idx_i, idx_org+1):
+                        token_list.append(list_of_token[i])
+                    per_candidate_phrases.append(token_list)
+
+    return per_candidate_phrases
+
 def check_negative_phrases(list_candidate_phrases):
     candidate_phrases_without_negative = []
 

@@ -160,9 +160,9 @@ def compute_similarity(text_input, final_sentence):
     print('Similarity : ')
     print(sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence))
 
+# Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
+# loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
 def identify_private_locational_phrases(normalized_tokenized_output):
-    # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
-    # loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
     loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(normalized_tokenized_output)
     print('Step 3a : ')
     print(loc_candidate_phrases)
@@ -190,20 +190,34 @@ def identify_private_organizational_phrases(normalized_tokenized_output):
     print('Step 6b : ')
     print(truly_private_org_candidate_phrases)
 
-def identify_private_temporal_phrases(pos_tagged_input):
-    message = ""
-    i = 0
-    for tuples in pos_tagged_input:
-        message = message + tuples[0]
-        i = i + 1
-        if (i < len(pos_tagged_input)):
-            message = message + " "
+def identify_private_temporal_phrases(message):
+    # message = ""
+    # i = 0
+    # for tuples in ner_prediction:
+    #     message = message + tuples[0]
+    #     i = i + 1
+    #     if (i < len(pos_tagged_input)):
+    #         message = message + " "
 
     message = temporal_phrase_tagger.do_temporal_tag(message)
+
+    # Anonymization here
+
     return message
 
-def identify_private_personal_phrases():
-    return 'TBD'
+def identify_private_personal_phrases(normalized_tokenized_output):
+    per_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(normalized_tokenized_output)
+    print('Step 3a : ')
+    print(per_candidate_phrases)
+    non_neg_per_candidate_phrases = sample_rule_based.check_negative_phrases(per_candidate_phrases)
+    print('Step 4a : ')
+    print(non_neg_per_candidate_phrases)
+    private_per_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_per_candidate_phrases)
+    print('Step 5a : ')
+    print(private_per_candidate_phrases)
+    truly_private_per_candidate_phrases = sample_rule_based.check_private_locational_verb(private_per_candidate_phrases)
+    print('Step 6a : ')
+    print(truly_private_per_candidate_phrases)
 
 if __name__ == '__main__':
     # python main.py load save_model_crf_gmb_dua_kali.pkl "On June 24th, I went to Bali for vacation" "Geraldi Dzakwan"
@@ -218,7 +232,8 @@ if __name__ == '__main__':
     else:
         sys.exit('Wrong 1st arguments')
 
-    pos_tagged_input = do_pos_tag(sys.argv[3])
+    input_message = sys.argv[3]
+    pos_tagged_input = do_pos_tag(input_message)
     featured_input = extract_features(pos_tagged_input)
     iob_prediction = predict_named_entity(crf, featured_input)
     ner_prediction = combine_named_entity_chunks(pos_tagged_input, iob_prediction)
@@ -236,7 +251,10 @@ if __name__ == '__main__':
     print('----------')
     identify_private_organizational_phrases(ner_prediction)
     print('----------')
-    identify_private_temporal_phrases(pos_tagged_input)
+    identify_private_personal_phrases(ner_prediction)
+    print('----------')
+    identify_private_temporal_phrases(input_message)
 
     # Ntar disatuin ama threshold dan co-occurence yang LOC sama ORG besok
     # PERSON pikirin lagi
+    # Time/temporal phrase di akhir aja

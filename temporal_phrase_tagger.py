@@ -373,8 +373,8 @@ def ground(tagged_text, base_date):
         timex_val = re.sub(r'\s.*', '', timex_val)
 
         # Substitute tag+timex in the text with grounded tag+timex.
-        tagged_text = re.sub('<TIMEX2>' + timex_ori + '</TIMEX2>', '<TIMEX2 val=\"' \
-            + timex_val + '\">' + timex_ori + '</TIMEX2>', tagged_text)
+        tagged_text = re.sub('<TIME>' + timex_ori + '</TIME>', '<TIME val=\"' \
+            + timex_val + '\">' + timex_ori + '</TIME>', tagged_text)
 
     return tagged_text
 
