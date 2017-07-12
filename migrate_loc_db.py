@@ -2,6 +2,7 @@ import sys
 import csv
 import MySQLdb
 
+single_quote = "'"
 double_quote = '"'
 comma = ", "
 
@@ -11,12 +12,37 @@ def fuse_with_double_quote(word, is_comma):
     else:
         return double_quote + word + double_quote
 
+def fuse_with_single_quote(word, is_comma):
+    if(is_comma):
+        return single_quote + word + single_quote + comma
+    else:
+        return single_quote + word + single_quote
+
 def all_data_string(loc_list, idx):
-    str1 = fuse_with_double_quote(loc_list[idx]['continent_name'], True)
-    str2 = fuse_with_double_quote(loc_list[idx]['country_name'], True)
-    str3 = fuse_with_double_quote(loc_list[idx]['subdivision_1_name'], True)
-    str4 = fuse_with_double_quote(loc_list[idx]['subdivision_2_name'], True)
-    str5 = fuse_with_double_quote(loc_list[idx]['city_name'], False)
+    if('"' not in loc_list[idx]['continent_name']):
+        str1 = fuse_with_double_quote(loc_list[idx]['continent_name'], True)
+    else:
+        str1 = fuse_with_single_quote(loc_list[idx]['continent_name'], True)
+
+    if('"' not in loc_list[idx]['country_name']):
+        str2 = fuse_with_double_quote(loc_list[idx]['country_name'], True)
+    else:
+        str2 = fuse_with_single_quote(loc_list[idx]['country_name'], True)
+
+    if('"' not in loc_list[idx]['subdivision_1_name']):
+        str3 = fuse_with_double_quote(loc_list[idx]['subdivision_1_name'], True)
+    else:
+        str3 = fuse_with_single_quote(loc_list[idx]['subdivision_1_name'], True)
+
+    if('"' not in loc_list[idx]['subdivision_2_name']):
+        str4 = fuse_with_double_quote(loc_list[idx]['subdivision_2_name'], True)
+    else:
+        str4 = fuse_with_single_quote(loc_list[idx]['subdivision_2_name'], True)
+
+    if('"' not in loc_list[idx]['city_name']):
+        str5 = fuse_with_double_quote(loc_list[idx]['city_name'], False)
+    else:
+        str5 = fuse_with_single_quote(loc_list[idx]['city_name'], False)
 
     return str1 + str2 + str3 + str4 + str5
 
@@ -54,9 +80,15 @@ if __name__ == '__main__':
 
     for i in range(1, len(loc_list)):
         print(i)
-        all_data = all_data_string(loc_list, i)
-        query = 'INSERT INTO location (continent_name, country_name, subdivision_1_name, subdivision_2_name, city_name) VALUES (' + all_data + ')';
-        cur.execute(query)
-        db.commit()
+        if (i >= 8932):
+            all_data = all_data_string(loc_list, i)
+            query = 'INSERT INTO location (continent_name, country_name, subdivision_1_name, subdivision_2_name, city_name) VALUES (' + all_data + ')';
+
+            try:
+                cur.execute(query)
+                db.commit()
+            except:
+                db.rollback()
+                sys.exit('Invalid query : ' + query)
 
     db.close()
