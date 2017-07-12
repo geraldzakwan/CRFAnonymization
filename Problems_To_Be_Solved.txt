@@ -1,7 +1,6 @@
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - PERSON GIMANA (MINGGU INI HARUS KELAR)
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
-- Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (MINGGU INI HARUS KELAR)
 - Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR)
 - Improve accuracy ner (opsional)
 - GAMBAR ULANG SKEMA, SATUIN DAN RAPIHIN SEMUA PROGRAM (MINGGU TERAKHIR)
@@ -16,6 +15,11 @@ DONE :
 - Ngukur distance antara anonymized text sama original text (MINGGU INI HARUS KELAR) (UDAH)
 - Normalizing text/spelling check & correction (DONE).
 - Perlu kasi pos tag info ke lemmatizer (DONE).
+
+- Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (DONE untuk LOCATION)
+- Buat PERSON kalo bisa ganti nama sesuai gender (cewe ganti cewe, cowo ganti cowo)
+- BUAT ORGANIZATION sementara ngk kepikir, langsung anonymize aja
+- BUAT TIME pake general/supression kaya di paper, keknya lebih gampang surpression
 
 Masalah :
 
