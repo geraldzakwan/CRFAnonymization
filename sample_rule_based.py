@@ -314,3 +314,39 @@ def check_private_organizational_verb(private_loc_candidate_phrases):
             truly_private_loc_candidate_phrases.append(candidate_phrases)
 
     return truly_private_loc_candidate_phrases
+
+def get_loc_idx(ner_prediction, truly_private_loc_candidate_phrases):
+    idx_dict = {}
+    print(ner_prediction)
+    for phrase in truly_private_loc_candidate_phrases:
+        loc_word = phrase[len(phrase)-1]
+        before_word_1 = phrase[len(phrase)-2]
+        before_word_2 = phrase[len(phrase)-3]
+        idx = 1
+
+        for i in range(2, len(ner_prediction)):
+            if(ner_prediction[i][0] == loc_word):
+                print("Masuk : ", loc_word)
+                if(ner_prediction[i-1][0] == before_word_1 and ner_prediction[i-2][0] == before_word_2):
+                    if i not in idx_dict:
+                        idx_dict[i] = True
+
+    return idx_dict
+
+def private_personal_loc_main_function(normalized_tokenized_output):
+    loc_candidate_phrases = identify_candidate_private_locational_phrases(normalized_tokenized_output)
+    # print('Step 3a : ')
+    # print(loc_candidate_phrases)
+    non_neg_loc_candidate_phrases = check_negative_phrases(loc_candidate_phrases)
+    # print('Step 4a : ')
+    # print(non_neg_loc_candidate_phrases)
+    private_loc_candidate_phrases = check_non_private_locational_verb(non_neg_loc_candidate_phrases)
+    # print('Step 5a : ')
+    # print(private_loc_candidate_phrases)
+    truly_private_loc_candidate_phrases = check_private_locational_verb(private_loc_candidate_phrases)
+    # print('Step 6a : ')
+    # print(truly_private_loc_candidate_phrases)
+
+    all_idx = get_loc_idx(normalized_tokenized_output, truly_private_loc_candidate_phrases)
+
+    return all_idx

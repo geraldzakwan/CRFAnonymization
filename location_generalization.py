@@ -92,6 +92,8 @@ def return_it_or_above(loc_detail_list, idx, key):
 # print(ret_dict['city']['Jakarta'])
 # print('----------')
 def generalize_loc(ret_dict, location, level):
+    ret_dict = get_loc_list()
+
     loc_detail_list = ret_dict['loc']
     continent_dict = ret_dict['continent']
     country_dict = ret_dict['country']
@@ -151,6 +153,14 @@ def search_in_loc_list(loc_list, location, key):
             return i
     return -1
 
-if __name__ == '__main__':
+def anonymize_all_location(ner_prediction, idx_dict, level):
     ret_dict = get_loc_list()
-    print(generalize_loc(ret_dict, sys.argv[1], 1))
+
+    for keys in idx_dict:
+        print("Keys : ", keys)
+        ner_prediction[keys][0] = generalize_loc(ret_dict, ner_prediction[keys][0], level)
+
+    return ner_prediction
+
+if __name__ == '__main__':
+    print(generalize_loc(sys.argv[1], 1))

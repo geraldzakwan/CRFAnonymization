@@ -96,13 +96,19 @@ def combine_named_entity_chunks(pos_tagged_input, iob_prediction):
                 # Buggy for end of sentence : if(i >= len(iob_prediction)-1):
                 if(i >= len(iob_prediction)):
                     break
-            ner_prediction.append((curr_items, ner_tag))
+            tuple_list = []
+            tuple_list.append(curr_items)
+            tuple_list.append(ner_tag)
+            ner_prediction.append(tuple_list)
             i = i - 1
         else:
             # curr_items = tokenized_input[i]
             curr_items = pos_tagged_input[i][0]
             ner_tag = iob_prediction[i]
-            ner_prediction.append((curr_items, ner_tag))
+            tuple_list = []
+            tuple_list.append(curr_items)
+            tuple_list.append(ner_tag)
+            ner_prediction.append(tuple_list)
         i = i + 1
 
     return ner_prediction
@@ -163,19 +169,10 @@ def compute_similarity(text_input, final_sentence):
 
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 # loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
-def identify_private_locational_phrases(normalized_tokenized_output):
-    loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(normalized_tokenized_output)
-    print('Step 3a : ')
-    print(loc_candidate_phrases)
-    non_neg_loc_candidate_phrases = sample_rule_based.check_negative_phrases(loc_candidate_phrases)
-    print('Step 4a : ')
-    print(non_neg_loc_candidate_phrases)
-    private_loc_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_loc_candidate_phrases)
-    print('Step 5a : ')
-    print(private_loc_candidate_phrases)
-    truly_private_loc_candidate_phrases = sample_rule_based.check_private_locational_verb(private_loc_candidate_phrases)
-    print('Step 6a : ')
-    print(truly_private_loc_candidate_phrases)
+def identify_private_locational_phrases(normalized_tokenized_output, level):
+    all_idx = sample_rule_based.private_personal_loc_main_function(normalized_tokenized_output)
+    anonymized_loc_sentence = location_generalization.anonymize_all_location(normalized_tokenized_output, all_idx, level)
+    return anonymized_loc_sentence
 
 def identify_private_organizational_phrases(normalized_tokenized_output):
     org_candidate_phrases = sample_rule_based.identify_candidate_private_organizational_phrases(ner_prediction)
@@ -207,16 +204,16 @@ def identify_private_temporal_phrases(message):
     return message
 
 def identify_private_personal_phrases(normalized_tokenized_output):
-    per_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(normalized_tokenized_output)
+    per_candidate_phrases = identify_candidate_private_locational_phrases(normalized_tokenized_output)
     print('Step 3a : ')
     print(per_candidate_phrases)
-    non_neg_per_candidate_phrases = sample_rule_based.check_negative_phrases(per_candidate_phrases)
+    non_neg_per_candidate_phrases = check_negative_phrases(per_candidate_phrases)
     print('Step 4a : ')
     print(non_neg_per_candidate_phrases)
-    private_per_candidate_phrases = sample_rule_based.check_non_private_locational_verb(non_neg_per_candidate_phrases)
+    private_per_candidate_phrases = check_non_private_locational_verb(non_neg_per_candidate_phrases)
     print('Step 5a : ')
     print(private_per_candidate_phrases)
-    truly_private_per_candidate_phrases = sample_rule_based.check_private_locational_verb(private_per_candidate_phrases)
+    truly_private_per_candidate_phrases = check_private_locational_verb(private_per_candidate_phrases)
     print('Step 6a : ')
     print(truly_private_per_candidate_phrases)
 
@@ -248,13 +245,13 @@ if __name__ == '__main__':
     print('----------')
     print(predicted_sentence_cooccurence)
     print('----------')
-    identify_private_locational_phrases(ner_prediction)
+    print(identify_private_locational_phrases(ner_prediction, 1))
     print('----------')
-    identify_private_organizational_phrases(ner_prediction)
-    print('----------')
-    identify_private_personal_phrases(ner_prediction)
-    print('----------')
-    identify_private_temporal_phrases(input_message)
+    # identify_private_organizational_phrases(ner_prediction)
+    # print('----------')
+    # identify_private_personal_phrases(ner_prediction)
+    # print('----------')
+    # identify_private_temporal_phrases(input_message)
 
     # Ntar disatuin ama threshold dan co-occurence yang LOC sama ORG besok
     # PERSON pikirin lagi
