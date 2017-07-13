@@ -15,6 +15,7 @@ import sample_rule_based
 import normalization
 import spell_checker
 import temporal_phrase_tagger
+import location_generalization
 
 def load_or_train_crf(load, filename):
     crf = None
