@@ -5,6 +5,7 @@
 - Improve accuracy ner (opsional)
 - OPSIONAL (Co-reference resolution). Contoh : My sister's name is Anna. Anna lives in Chicago. Harusnya dua2 anna ke anonymize dan Anna lives in Chicago ke detect jadi private phrase.
 
+
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - PERSON GIMANA (MINGGU INI HARUS KELAR)
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
