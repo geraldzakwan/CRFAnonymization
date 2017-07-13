@@ -113,34 +113,34 @@ def generalize_loc(ret_dict, location, level):
     elif(location in country_dict):
         # print('Country')
         idx = search_in_loc_list(loc_detail_list, location, 'country_name')
-        return return_it_or_above(loc_detail_list, idx, 'continent_name')
+        return "some countries in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
     elif(location in sub_1_dict):
         # print('Sub 1')
         idx = search_in_loc_list(loc_detail_list, location, 'subdivision_1_name')
         if(level == 1):
-            return return_it_or_above(loc_detail_list, idx, 'country_name')
+            return "some states in " + return_it_or_above(loc_detail_list, idx, 'country_name')
         elif(level == 2):
-            return return_it_or_above(loc_detail_list, idx, 'continent_name')
+            return "some states in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
     elif(location in sub_2_dict):
         # print('Sub 2')
         idx = search_in_loc_list(loc_detail_list, location, 'subdivision_2_name')
         if(level == 1):
-            return return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
+            return "some provinces in " + return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
         elif(level == 2):
-            return return_it_or_above(loc_detail_list, idx, 'country_name')
+            return "some provinces in " + return_it_or_above(loc_detail_list, idx, 'country_name')
         elif(level == 3):
-            return return_it_or_above(loc_detail_list, idx, 'continent_name')
+            return "some provinces in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
     elif(location in city_dict):
         # print('City')
         idx = search_in_loc_list(loc_detail_list, location, 'city_name')
         if(level == 1):
-            return return_it_or_above(loc_detail_list, idx, 'subdivision_2_name')
+            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_2_name')
         elif(level == 2):
-            return return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
+            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
         elif(level == 3):
-            return return_it_or_above(loc_detail_list, idx, 'country_name')
+            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'country_name')
         elif(level == 4):
-            return return_it_or_above(loc_detail_list, idx, 'continent_name')
+            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
     else:
         # Return random continent if not known
         list_of_value = continent_dict.values()
