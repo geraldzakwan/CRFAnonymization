@@ -315,6 +315,70 @@ def check_private_organizational_verb(private_loc_candidate_phrases):
 
     return truly_private_loc_candidate_phrases
 
+def check_non_private_personal_verb(non_neg_loc_candidate_phrases):
+    private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM non_private_personal_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in non_neg_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(not is_inside):
+            private_loc_candidate_phrases.append(candidate_phrases)
+
+    return private_loc_candidate_phrases
+
+def check_private_personal_verb(private_loc_candidate_phrases):
+    truly_private_loc_candidate_phrases = []
+
+    db = MySQLdb.connect(host="localhost",    # your host, usually localhost
+                         user="root",         # your username
+                         passwd="",  # your password
+                         db="english_corpus")        # name of the data base
+
+    cur = db.cursor(MySQLdb.cursors.DictCursor)
+
+    # Use all the SQL you like
+    query = 'SELECT * FROM private_personal_verbs';
+    cur.execute(query)
+
+    word_dict = {}
+    for row in cur.fetchall():
+        # print(row['word'])
+        word_dict[row['word']] = True
+
+    db.close()
+
+    for candidate_phrases in private_loc_candidate_phrases:
+        is_inside = False
+        for i in range(1, len(candidate_phrases)-1):
+            if(candidate_phrases[i] in word_dict):
+                is_inside = True
+
+        if(is_inside):
+            truly_private_loc_candidate_phrases.append(candidate_phrases)
+
+    return truly_private_loc_candidate_phrases
+
 def get_loc_idx(ner_prediction, truly_private_loc_candidate_phrases):
     idx_dict = {}
     print(ner_prediction)
@@ -333,20 +397,39 @@ def get_loc_idx(ner_prediction, truly_private_loc_candidate_phrases):
 
     return idx_dict
 
-def private_personal_loc_main_function(normalized_tokenized_output):
+def private_locational_main_function(normalized_tokenized_output):
+    print('KEPANGGIL')
     loc_candidate_phrases = identify_candidate_private_locational_phrases(normalized_tokenized_output)
-    # print('Step 3a : ')
-    # print(loc_candidate_phrases)
+    print('Step 3a : ')
+    print(loc_candidate_phrases)
     non_neg_loc_candidate_phrases = check_negative_phrases(loc_candidate_phrases)
-    # print('Step 4a : ')
-    # print(non_neg_loc_candidate_phrases)
+    print('Step 4a : ')
+    print(non_neg_loc_candidate_phrases)
     private_loc_candidate_phrases = check_non_private_locational_verb(non_neg_loc_candidate_phrases)
-    # print('Step 5a : ')
-    # print(private_loc_candidate_phrases)
+    print('Step 5a : ')
+    print(private_loc_candidate_phrases)
     truly_private_loc_candidate_phrases = check_private_locational_verb(private_loc_candidate_phrases)
-    # print('Step 6a : ')
-    # print(truly_private_loc_candidate_phrases)
+    print('Step 6a : ')
+    print(truly_private_loc_candidate_phrases)
 
     all_idx = get_loc_idx(normalized_tokenized_output, truly_private_loc_candidate_phrases)
+    print(all_idx)
+    return all_idx
+
+def private_personal_main_function(normalized_tokenized_output):
+    per_candidate_phrases = identify_candidate_private_personal_phrases(normalized_tokenized_output)
+    print('Step 3c : ')
+    print(per_candidate_phrases)
+    non_neg_per_candidate_phrases = check_negative_phrases(per_candidate_phrases)
+    print('Step 4c : ')
+    print(non_neg_per_candidate_phrases)
+    private_per_candidate_phrases = check_non_private_personal_verb(non_neg_per_candidate_phrases)
+    print('Step 5c : ')
+    print(private_per_candidate_phrases)
+    truly_private_per_candidate_phrases = check_private_personal_verb(private_per_candidate_phrases)
+    print('Step 6c : ')
+    print(truly_private_per_candidate_phrases)
+
+    all_idx = {}
 
     return all_idx

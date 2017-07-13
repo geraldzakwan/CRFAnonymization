@@ -1,11 +1,13 @@
-- Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
-- PERSON GIMANA (MINGGU INI HARUS KELAR)
-- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
-- Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR)
-- Improve accuracy ner (opsional)
+- Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR). Ini susah karena google apinya terbatas.
 - GAMBAR ULANG SKEMA, SATUIN DAN RAPIHIN SEMUA PROGRAM (MINGGU TERAKHIR)
 - Satuin ke API (MINGGU TERAKHIR)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
+- Improve accuracy ner (opsional)
+- OPSIONAL (Co-reference resolution). Contoh : My sister's name is Anna. Anna lives in Chicago. Harusnya dua2 anna ke anonymize dan Anna lives in Chicago ke detect jadi private phrase.
+
+- Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
+- PERSON GIMANA (MINGGU INI HARUS KELAR)
+- Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
 
 Bug :
 Count bisa 0 di sentence_similarity, jadinya float division by zero
@@ -17,7 +19,10 @@ DONE :
 - Perlu kasi pos tag info ke lemmatizer (DONE).
 
 - Anonymization pake generalization mesti gimana, kemaren dicoba di wordnet gabisa (DONE untuk LOCATION)
+
 - Buat PERSON kalo bisa ganti nama sesuai gender (cewe ganti cewe, cowo ganti cowo)
+- Pake https://genderize.io/, nanti bikin dataset simple (26 nama, A-Z buat ngegantinya)
+
 - BUAT ORGANIZATION sementara ngk kepikir, langsung anonymize aja
 - BUAT TIME pake general/supression kaya di paper, keknya lebih gampang surpression
 
