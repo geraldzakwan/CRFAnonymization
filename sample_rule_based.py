@@ -397,6 +397,24 @@ def get_loc_idx(ner_prediction, truly_private_loc_candidate_phrases):
 
     return idx_dict
 
+def get_org_idx(ner_prediction, truly_private_loc_candidate_phrases):
+    idx_dict = {}
+    print(ner_prediction)
+    for phrase in truly_private_loc_candidate_phrases:
+        loc_word = phrase[len(phrase)-1]
+        before_word_1 = phrase[len(phrase)-2]
+        before_word_2 = phrase[len(phrase)-3]
+        idx = 1
+
+        for i in range(2, len(ner_prediction)):
+            if(ner_prediction[i][0] == loc_word):
+                # print("Masuk : ", loc_word)
+                if(ner_prediction[i-1][0] == before_word_1 and ner_prediction[i-2][0] == before_word_2):
+                    if i not in idx_dict:
+                        idx_dict[i] = True
+
+    return idx_dict
+
 def get_per_idx(ner_prediction, truly_private_loc_candidate_phrases):
     idx_dict = {}
     print(ner_prediction)
@@ -431,6 +449,24 @@ def private_locational_main_function(normalized_tokenized_output):
     print(truly_private_loc_candidate_phrases)
 
     all_idx = get_loc_idx(normalized_tokenized_output, truly_private_loc_candidate_phrases)
+    # print(all_idx)
+    return all_idx
+
+def private_organizational_main_function(normalized_tokenized_output):
+    org_candidate_phrases = identify_candidate_private_organizational_phrases(normalized_tokenized_output)
+    print('Step 3b : ')
+    print(org_candidate_phrases)
+    non_neg_org_candidate_phrases = check_negative_phrases(org_candidate_phrases)
+    print('Step 4b : ')
+    print(non_neg_org_candidate_phrases)
+    private_org_candidate_phrases = check_non_private_organizational_verb(non_neg_org_candidate_phrases)
+    print('Step 5b : ')
+    print(private_org_candidate_phrases)
+    truly_private_org_candidate_phrases = check_private_organizational_verb(private_org_candidate_phrases)
+    print('Step 6b : ')
+    print(truly_private_org_candidate_phrases)
+
+    all_idx = get_loc_idx(normalized_tokenized_output, truly_private_org_candidate_phrases)
     # print(all_idx)
     return all_idx
 

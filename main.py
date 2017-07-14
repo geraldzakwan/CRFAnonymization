@@ -17,6 +17,7 @@ import spell_checker
 import temporal_phrase_tagger
 import location_generalization
 import genderize
+import org_anonymization
 
 def load_or_train_crf(load, filename):
     crf = None
@@ -181,18 +182,9 @@ def identify_private_personal_phrases(normalized_tokenized_output):
     return anonymized_per_sentence
 
 def identify_private_organizational_phrases(normalized_tokenized_output):
-    org_candidate_phrases = sample_rule_based.identify_candidate_private_organizational_phrases(ner_prediction)
-    print('Step 3b : ')
-    print(org_candidate_phrases)
-    non_neg_org_candidate_phrases = sample_rule_based.check_negative_phrases(org_candidate_phrases)
-    print('Step 4b : ')
-    print(non_neg_org_candidate_phrases)
-    private_org_candidate_phrases = sample_rule_based.check_non_private_organizational_verb(non_neg_org_candidate_phrases)
-    print('Step 5b : ')
-    print(private_org_candidate_phrases)
-    truly_private_org_candidate_phrases = sample_rule_based.check_private_organizational_verb(private_org_candidate_phrases)
-    print('Step 6b : ')
-    print(truly_private_org_candidate_phrases)
+    all_idx = sample_rule_based.private_organizational_main_function(normalized_tokenized_output)
+    anonymized_per_sentence = org_anonymization.anonymize_all_org(normalized_tokenized_output, all_idx)
+    return anonymized_per_sentence
 
 def identify_private_temporal_phrases(message):
     # message = ""
@@ -242,8 +234,8 @@ if __name__ == '__main__':
     print('----------')
     print(identify_private_locational_phrases(ner_prediction, 1))
     print('----------')
-    # identify_private_organizational_phrases(ner_prediction)
-    # print('----------')
+    identify_private_organizational_phrases(ner_prediction)
+    print('----------')
     print(identify_private_personal_phrases(ner_prediction))
     print('----------')
     # identify_private_temporal_phrases(input_message)
