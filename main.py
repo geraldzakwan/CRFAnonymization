@@ -16,6 +16,7 @@ import normalization
 import spell_checker
 import temporal_phrase_tagger
 import location_generalization
+import genderize
 
 def load_or_train_crf(load, filename):
     crf = None
@@ -210,7 +211,7 @@ def identify_private_temporal_phrases(message):
 
 if __name__ == '__main__':
     # python main.py load save_model_crf_gmb_dua_kali.pkl "On June 24th, I went to Bali for vacation" "Geraldi Dzakwan"
-    # python main.py load save_model_crf_gmb_dua_kali.pkl "My sister's name is Anna. Anna lives in Jakarta." "Geraldi Dzakwan"
+    # python main.py load save_model_crf_gmb_dua_kali.pkl "My sister's name is Alice. Alice lives in Jakarta." "Geraldi Dzakwan"
     # python main.py load save_model_crf_gmb_dua_kali.pkl "I live in Jakarta with my sister, Alice." "Geraldi Dzakwan"
 
     if(len(sys.argv) < 5):
@@ -243,7 +244,7 @@ if __name__ == '__main__':
     print('----------')
     # identify_private_organizational_phrases(ner_prediction)
     # print('----------')
-    identify_private_personal_phrases(ner_prediction)
+    print(identify_private_personal_phrases(ner_prediction))
     print('----------')
     # identify_private_temporal_phrases(input_message)
 

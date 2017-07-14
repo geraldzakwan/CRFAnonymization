@@ -1,6 +1,7 @@
 import sys
 import MySQLdb
 import requests, json
+from random import randint
 
 def get_name_list():
     db = MySQLdb.connect(host="localhost",      # your host, usually localhost
@@ -59,6 +60,36 @@ def get_genders(names):
             retrn.append((u'None',u'0.0',0.0))
 
     return retrn
+
+def anonymize_all_person(normalized_tokenized_output, all_idx):
+    name_list = get_name_list()
+    male_list = name_list['+']
+    m = len(male_list)
+    female_list = name_list['-']
+    n = len(female_list)
+
+    for idx in all_idx:
+        name = normalized_tokenized_output[idx][0]
+        name_list = []
+        name_list.append(name)
+        gender_list = get_genders(name_list)
+        gender_tuple = gender_list[0]
+        gender = gender_tuple[0]
+        if (gender == None):
+            sys.exit('New case gender None')
+        else:
+            if(gender == 'male'):
+                # Nanti ini bisa diganti jadi yang terdekat, kalo niat
+                rand_int = randint(0, m-1)
+                normalized_tokenized_output[idx][0] = male_list[rand_int]
+            elif(gender == 'female'):
+                print('MASUK BAWAH')
+                rand_int = randint(0, n-1)
+                normalized_tokenized_output[idx][0] = female_list[rand_int]
+            else:
+                sys.exit('New case strange')
+
+    return normalized_tokenized_output
 
 if __name__ == '__main__':
     # print(get_name_list())
