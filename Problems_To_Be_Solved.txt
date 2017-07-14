@@ -8,6 +8,7 @@
 
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - PERSON GIMANA (MINGGU INI HARUS KELAR). IDE CURANG : Masukin ke genderize.io, kalo keluar None bukan person wkwk
+- RULE BUAT PERSON SAMA ORGANIZATION PIKIRIN
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
 
 Bug :
