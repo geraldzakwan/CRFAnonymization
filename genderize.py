@@ -70,6 +70,19 @@ def get_genders(names):
 
     return retrn
 
+def get_gender_info_only(name):
+    name_list = []
+    name_list.append(name)
+    gender_list = get_genders(name_list)
+
+    # print('Gender list:')
+    # print(gender_list)
+
+    gender_tuple = gender_list[0]
+    gender = gender_tuple[0]
+
+    return gender
+
 def number_of_words(name):
     ret = 1
     for i in range (0, len(name)):
@@ -90,11 +103,8 @@ def anonymize_all_person(normalized_tokenized_output, all_idx):
         # Get gender from API
         name = normalized_tokenized_output[idx][0]
         number_of_word = number_of_words(name)
-        name_list = []
-        name_list.append(name)
-        gender_list = get_genders(name_list)
-        gender_tuple = gender_list[0]
-        gender = gender_tuple[0]
+
+        gender = get_gender_info_only(name)
 
         if (gender == None):
             sys.exit('New case gender None')
@@ -131,5 +141,7 @@ if __name__ == '__main__':
     #     name_list.append(sys.argv[i])
     # print(get_genders(name_list))
 
-    name_list = get_name_list()
-    print(name_list)
+    # name_list = get_name_list()
+    # print(name_list)
+
+    print(get_gender_info_only(sys.argv[1]))

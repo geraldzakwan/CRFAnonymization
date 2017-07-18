@@ -180,6 +180,28 @@ def compute_similarity(text_input, final_sentence):
     # print('Similarity : ')
     return sentence_similarity.symmetric_sentence_similarity(text_input, final_sentence)
 
+# Note : sementara genderize masih pake first name, mayan akurat
+def identify_person_entity_further(ner_prediction):
+    # print('PERSON ENTITY FURTHER')
+    for token_tuple in ner_prediction:
+        noun = token_tuple[0]
+        ner = token_tuple[1]
+
+        if(noun[0].isupper()):
+            gender = genderize.get_gender_info_only(noun)
+            # print(noun, gender)
+            if(gender != 'None'):
+                token_tuple[1] = 'per'
+            else:
+                pass
+                # Kasus kalo sebenernya bukan person, ntar aja ini
+                # if(ner == 'per')
+    # print ''
+    # print ''
+    # print(ner_prediction)
+    # Kan udh ke gabung chunknya si ner_prediction, jadi kgk usah chunking lgi
+    return ner_prediction
+
 # Buat yang alphanya di bawah threshold (co-occurencenya kecil), di cek lagi sama rule based approach
 # loc_candidate_phrases = sample_rule_based.identify_candidate_private_locational_phrases(ner_prediction)
 def identify_private_locational_phrases(normalized_tokenized_output, level):
@@ -243,6 +265,18 @@ if __name__ == '__main__':
     featured_input = extract_features(pos_tagged_input)
     iob_prediction = predict_named_entity(crf, featured_input)
     ner_prediction = combine_named_entity_chunks(pos_tagged_input, iob_prediction)
+
+    # Di sini genderize.io pake buat nambel NER person
+    # print('Sebelum : ')
+    # print(ner_prediction)
+    # print ''
+    # print ''
+    # ner_prediction = identify_person_entity_further(ner_prediction)
+    # print('Sesudah : ')
+    # print(ner_prediction)
+    # print ''
+    # print ''
+
     predicted_sentence_cooccurence = co_occurence_calculation(sys.argv[4], ner_prediction)
 
     print('')
