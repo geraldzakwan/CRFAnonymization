@@ -33,14 +33,14 @@ import normalization
 import spell_checker
 import temporal_phrase_tagger
 
-# train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
-# test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
+train_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
+test_sents = access_gmb_corpus.read_corpus_ner('gmb-2.2.0', '--core')
 
-# X_train = [feature_extraction.sent2features(s) for s in train_sents]
-# y_train = [feature_extraction.sent2labels(s) for s in train_sents]
+X_train = [feature_extraction.sent2features(s) for s in train_sents]
+y_train = [feature_extraction.sent2labels(s) for s in train_sents]
 
-# X_test = [feature_extraction.sent2features(s) for s in test_sents]
-# y_test = [feature_extraction.sent2labels(s) for s in test_sents]
+X_test = [feature_extraction.sent2features(s) for s in test_sents]
+y_test = [feature_extraction.sent2labels(s) for s in test_sents]
 
 load = True
 

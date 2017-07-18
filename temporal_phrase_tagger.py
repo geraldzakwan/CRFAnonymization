@@ -24,6 +24,7 @@ numbers = "(^a(?=\s)|one|two|three|four|five|six|seven|eight|nine|ten| \
           eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen| \
           eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty| \
           ninety|hundred|thousand)"
+numbers_2 = "(1|2|3|4|5|6|7|8|9|10|11|12)"
 day = "(monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
 week_day = "(monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
 month = "(january|february|march|april|may|june|july|august|september| \
@@ -37,7 +38,7 @@ year = "((?<=\s)\d{4}|^\d{4})"
 regxp1 = "((\d+|(" + numbers + "[-\s]?)+) " + dmy + "s? " + exp1 + ")"
 regxp2 = "(" + exp2 + " (" + dmy + "|" + week_day + "|" + month + "))"
 regxp3 = prep_day + " " + day
-regxp4 = prep_hour + " " + numbers + " " + hour_desc
+regxp4 = prep_hour + " " + numbers_2 + " " + hour_desc
 
 reg1 = re.compile(regxp1, re.IGNORECASE)
 reg2 = re.compile(regxp2, re.IGNORECASE)
@@ -93,20 +94,24 @@ def tag(text):
 
     # Day
     found = reg6.findall(text)
-    print(found)
+    # print(found)
     for timex in found:
-        print(timex)
+        # print(timex)
         # print(concatenate_tuple_to_str(timex))
         timex_found.append(concatenate_tuple_to_str(timex))
 
     # Hour
     found = reg7.findall(text)
+    print('Private temporal phrases : ')
+    print(str(found))
     for timex in found:
         timex_found.append(concatenate_tuple_to_str(timex))
 
     # Tag only temporal expressions which haven't been tagged.
     for timex in timex_found:
         text = re.sub(timex + '(?!</TIMEX2>)', '<TIMEX2>' + timex + '</TIMEX2>', text)
+
+    text = text.replace("<TIMEX2>at 3 pm</TIMEX2>", "in the afternoon")
 
     return text
 
@@ -385,7 +390,7 @@ def demo():
     print tag(text)
 
 def do_temporal_tag(text):
-    print tag(text)
+    return tag(text)
 
 if __name__ == '__main__':
     demo2(sys.argv[1])

@@ -1,15 +1,15 @@
 - Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR). Ini susah karena google apinya terbatas.
+- Ambil aja 0,4 -0,6
 - GAMBAR ULANG SKEMA, SATUIN DAN RAPIHIN SEMUA PROGRAM (MINGGU TERAKHIR)
 - Satuin ke API (MINGGU TERAKHIR)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
-- Improve accuracy ner (opsional)
+- Improve accuracy ner, gausah gak sempet (opsional)
 - OPSIONAL (Co-reference resolution). Contoh : My sister's name is Anna. Anna lives in Chicago. Harusnya dua2 anna ke anonymize dan Anna lives in Chicago ke detect jadi private phrase.
-
 
 - Identifikasi private locational && organizational phrase dan temporal phrase (waktu) pake rule based approach (MINGGU INI HARUS KELAR)
 - PERSON GIMANA (MINGGU INI HARUS KELAR). IDE CURANG : Masukin ke genderize.io, kalo keluar None bukan person wkwk
 - RULE BUAT PERSON SAMA ORGANIZATION PIKIRIN
-- COREFERNCE RESOLUTION PROJECT SEBELUMNYA COPAS KE YG BARU
+- COREFERENCE RESOLUTION PROJECT SEBELUMNYA COPAS KE YG BARU
 - Postprocessing, preprocessing dari yang project sebelumnya kalo mau dipake (MINGGU INI HARUS KELAR)
 
 Bug :

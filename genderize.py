@@ -83,7 +83,7 @@ def anonymize_all_person(normalized_tokenized_output, all_idx):
                 rand_int = randint(0, m-1)
                 normalized_tokenized_output[idx][0] = male_list[rand_int]
             elif(gender == 'female'):
-                print('MASUK BAWAH')
+                # print('MASUK BAWAH')
                 rand_int = randint(0, n-1)
                 normalized_tokenized_output[idx][0] = female_list[rand_int]
             else:

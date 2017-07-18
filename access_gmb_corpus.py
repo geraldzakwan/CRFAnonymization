@@ -1,3 +1,6 @@
+import os
+import collections
+
 def to_conll_iob(annotated_sentence):
     """
     `annotated_sentence` = list of triplets [(w1, t1, iob1), ...]
@@ -116,7 +119,7 @@ def read_corpus_ner(corpus_root, mode):
 
                         # Debugging
                         it = it + 1
-                        print(it)
+                        # print(it)
 
     # This is to return list
     return ret_list

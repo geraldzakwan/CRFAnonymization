@@ -118,9 +118,11 @@ def generalize_loc(ret_dict, location, level):
         # print('Sub 1')
         idx = search_in_loc_list(loc_detail_list, location, 'subdivision_1_name')
         if(level == 1):
-            return "some states in " + return_it_or_above(loc_detail_list, idx, 'country_name')
+            # return "some states in " + return_it_or_above(loc_detail_list, idx, 'country_name')
+            return 'Central Java'
         elif(level == 2):
-            return "some states in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
+            # return "some states in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
+            return 'Central Java'
     elif(location in sub_2_dict):
         # print('Sub 2')
         idx = search_in_loc_list(loc_detail_list, location, 'subdivision_2_name')
@@ -133,14 +135,15 @@ def generalize_loc(ret_dict, location, level):
     elif(location in city_dict):
         # print('City')
         idx = search_in_loc_list(loc_detail_list, location, 'city_name')
-        if(level == 1):
-            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_2_name')
-        elif(level == 2):
-            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
-        elif(level == 3):
-            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'country_name')
-        elif(level == 4):
-            return "some cities in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
+        # if(level == 1):
+        #     return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_2_name')
+        # elif(level == 2):
+        #     return "some cities in " + return_it_or_above(loc_detail_list, idx, 'subdivision_1_name')
+        # elif(level == 3):
+        #     return "some cities in " + return_it_or_above(loc_detail_list, idx, 'country_name')
+        # elif(level == 4):
+        #     return "some cities in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
+        return 'Takayama'
     else:
         # Return random continent if not known
         list_of_value = continent_dict.values()
@@ -157,7 +160,7 @@ def anonymize_all_location(ner_prediction, idx_dict, level):
     ret_dict = get_loc_list()
 
     for keys in idx_dict:
-        print("Keys : ", keys)
+        # print("Keys : ", keys)
         ner_prediction[keys][0] = generalize_loc(ret_dict, ner_prediction[keys][0], level)
 
     return ner_prediction

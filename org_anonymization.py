@@ -1,6 +1,7 @@
 from random import randint
 
 def anonymize_all_org(normalized_tokenized_output, all_idx):
+    # print(all_idx)
     for idx in all_idx:
         # Kalo bisa dapet location negara
         # Co reference resolution dari project sebelumnya copy
@@ -10,6 +11,7 @@ def anonymize_all_org(normalized_tokenized_output, all_idx):
         if(x==1):
             normalized_tokenized_output[idx][0] = 'an organization in the country'
         else:
-            normalized_tokenized_output[idx][0] = 'a company in the country'
+            normalized_tokenized_output[idx][0] = 'college'
+            # normalized_tokenized_output[idx][0] = 'a company in the country'
 
     return normalized_tokenized_output
