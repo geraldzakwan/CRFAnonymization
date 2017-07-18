@@ -1,0 +1,31 @@
+- Pake https://genderize.io/ buat person named entity GG
+
+- Nanti bikin dataset simple (52 nama, A-Z masing-masing 2 buat ngegantinya) DONE
+
+- Gausa abjad awal sama deng, harusnya lebih ke jumlah kata sama, bikin nama 1-3 kata DONE
+
+- Kalo ngk,bikin first_name sama last_name di database. Kalo replacement 1 word nama pake first_name,
+kalo lebih combine first_name dan last_name dua2nya random.
+
+- Buat anonymization location, pake yang setipe satu general
+
+- Buat anonymization organization, sesuain ama laporan, simple
+
+- Tambah rule yang time, target minimal 8
+
+- Anonymization time, generalnya dipikirin
+
+- Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution)
+
+- Bug ngk ada titik, I-nya kelewatan overflow
+
+Dua ini terakhir aja
+- Yang google co-occurence metrics buat nge detect noun (pake noun chunking selain yang udah
+  di rule based approach)
+- Google co-occurence metrics pastiin besok bikin KEY BARU, register email baru
+- SATUIN KE API
+
+Further improvement on names(ngk mungkin sekarang):
+- Gantinya gimana ya apa nama pertama aja? Ato dua2 diganti
+- Database nama multilevel 1 kata, 2 kata, 3 kata, dst
+- Nama sesuai negara (kalo ada informasi negara)

@@ -15,11 +15,20 @@ def get_name_list():
     query = 'SELECT * FROM name_corpus';
     cur.execute(query)
     ret_dict = {}
-    ret_dict['+'] = []
-    ret_dict['-'] = []
+    gen_dict = {}
+    ret_dict['first_name'] = {}
+    ret_dict['last_name'] = []
+    gen_dict['+'] = []
+    gen_dict['-'] = []
 
     for row in cur.fetchall():
-        ret_dict[row['gender']].append(row['word'])
+        if(row['pos'] == 'last_name'):
+            ret_dict['last_name'].append(row['word'])
+        else:
+            gen_dict[row['gender']].append(row['word'])
+
+    ret_dict['first_name']['+'] = gen_dict['+']
+    ret_dict['first_name']['-'] = gen_dict['-']
 
     db.close()
     return ret_dict
@@ -61,31 +70,52 @@ def get_genders(names):
 
     return retrn
 
+def number_of_words(name):
+    ret = 1
+    for i in range (0, len(name)):
+        if(name[i] == ' '):
+            ret = ret + 1
+    return ret
+
 def anonymize_all_person(normalized_tokenized_output, all_idx):
     name_list = get_name_list()
-    male_list = name_list['+']
+    male_list = name_list['first_name']['+']
     m = len(male_list)
-    female_list = name_list['-']
+    female_list = name_list['first_name']['-']
     n = len(female_list)
+    surname_list = name_list['last_name']
+    o = len(surname_list)
 
     for idx in all_idx:
+        # Get gender from API
         name = normalized_tokenized_output[idx][0]
+        number_of_word = number_of_words(name)
         name_list = []
         name_list.append(name)
         gender_list = get_genders(name_list)
         gender_tuple = gender_list[0]
         gender = gender_tuple[0]
+
         if (gender == None):
             sys.exit('New case gender None')
         else:
             if(gender == 'male'):
-                # Nanti ini bisa diganti jadi yang terdekat, kalo niat
-                rand_int = randint(0, m-1)
-                normalized_tokenized_output[idx][0] = male_list[rand_int]
+                # Nanti ini bisa diganti jadi yang terdekat, kalo niat, NGK USAH DUDE TY
+                if(number_of_word == 1):
+                    rand_int = randint(0, m-1)
+                    normalized_tokenized_output[idx][0] = male_list[rand_int]
+                else:
+                    rand_int_first_name = randint(0, m-1)
+                    rand_int_last_name = randint(0, o-1)
+                    normalized_tokenized_output[idx][0] = male_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
             elif(gender == 'female'):
-                # print('MASUK BAWAH')
-                rand_int = randint(0, n-1)
-                normalized_tokenized_output[idx][0] = female_list[rand_int]
+                if(number_of_word == 1):
+                    rand_int = randint(0, n-1)
+                    normalized_tokenized_output[idx][0] = female_list[rand_int]
+                else:
+                    rand_int_first_name = randint(0, n-1)
+                    rand_int_last_name = randint(0, o-1)
+                    normalized_tokenized_output[idx][0] = female_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
             else:
                 sys.exit('New case strange')
 
@@ -93,9 +123,13 @@ def anonymize_all_person(normalized_tokenized_output, all_idx):
 
 if __name__ == '__main__':
     # print(get_name_list())
-    if(len(sys.argv) < 2):
-        sys.exit('Supply name')
-    name_list = []
-    for i in range(1, len(sys.argv)):
-        name_list.append(sys.argv[i])
-    print(get_genders(name_list))
+
+    # if(len(sys.argv) < 2):
+    #     sys.exit('Supply name')
+    # name_list = []
+    # for i in range(1, len(sys.argv)):
+    #     name_list.append(sys.argv[i])
+    # print(get_genders(name_list))
+
+    name_list = get_name_list()
+    print(name_list)

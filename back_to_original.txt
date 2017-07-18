@@ -1,11 +1,13 @@
-BUG TITIK GAN, kalo NGK ADA TITIK, CHUNKINGNYA NGACO
+- BUG TITIK GAN, kalo NGK ADA TITIK, CHUNKINGNYA NGACO
 
-original text di stem lagi, taro stemnya di tuple
-iterasi, kalo stemnya sama print yg normal
-kalo beda print yang di ner_prediction yang udah di anonymize
-nextnya kalo masih beda, iterate terus itu kan artinya ada named entity hasil combine chunking
+- Ini buat balikin jadi original text dari yg udah di normalized
 
-PERSON PAKE GENDERIZE AJA, GG
+  original text di stem lagi, taro stemnya di tuple
+  iterasi, kalo stemnya sama print yg normal
+  kalo beda print yang di ner_prediction yang udah di anonymize
+  nextnya kalo masih beda, iterate terus itu kan artinya ada named entity hasil combine chunking
+
+- PERSON PAKE GENDERIZE AJA, GG
 
 mysql> select * from non_private_personal_verbs;
 +-------+

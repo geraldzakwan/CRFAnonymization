@@ -1,5 +1,5 @@
 - Nentuin threshold untuk co-occurence metrics, pake range aja (MINGGU INI HARUS KELAR). Ini susah karena google apinya terbatas.
-- Ambil aja 0,4 -0,6
+- Ambil aja 0,01 - 0,03
 - GAMBAR ULANG SKEMA, SATUIN DAN RAPIHIN SEMUA PROGRAM (MINGGU TERAKHIR)
 - Satuin ke API (MINGGU TERAKHIR)
 - Laporan, presentasi, analysis (MINGGU TERAKHIR)
