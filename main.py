@@ -244,6 +244,7 @@ if __name__ == '__main__':
     # python main.py load save_model_crf_gmb_dua_kali.pkl 'Cristiano Ronaldo is a football player for Real Madrid and Portugal national team.' "Geraldi Dzakwan"
     # python main.py load "save_model_crf_gmb_dua_kali.pkl" "My hometown is Jakarta. My favorite food is fried rice. I've studied at Bandung Institute of Technology for three years  majoring in computer science." "Geraldi Dzakwan"
     # python main.py load "save_model_crf_gmb_dua_kali.pkl" "I will meet my sister, Alice, at 3 pm maybe around Motosu." "Geraldi Dzakwan"
+    # python main.py load "save_model_crf_gmb_dua_kali.pkl" "I am one of the member of Youth Foundation in Bandung." "Geraldi Dzakwan"
 
     if(len(sys.argv) < 5):
         sys.exit('Wrong arguments')

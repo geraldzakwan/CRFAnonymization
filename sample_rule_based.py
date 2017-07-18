@@ -417,7 +417,10 @@ def get_org_idx(ner_prediction, truly_private_loc_candidate_phrases):
                 # print("Masuk : ", loc_word)
                 if(ner_prediction[i-1][0] == before_word_1 and ner_prediction[i-2][0] == before_word_2):
                     if i not in idx_dict:
-                        idx_dict[i] = True
+                        idx_dict[i] = phrase
+                    else:
+                        if(len(phrase) > idx_dict[i]):
+                            idx_dict[i] = phrase
 
     return idx_dict
 

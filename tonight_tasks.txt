@@ -8,9 +8,10 @@ TAPI MENDING NGK USAH DIPAKE KEKNYA, TOKYO AJA JADI PER
 - Kalo ngk,bikin first_name sama last_name di database. Kalo replacement 1 word nama pake first_name,
 kalo lebih combine first_name dan last_name dua2nya random. DONE
 
-- Buat anonymization location, pake yang setipe satu general
+- Buat anonymization location, pake yang setipe satu general DONE
 
-- Buat anonymization organization, sesuain ama laporan, simple
+- Buat anonymization organization, sesuain ama laporan, simple. HALF DONE
+'Kasi phrasenya jg harusnya wkwk'
 
 - Tambah rule yang time, target minimal 8
 
