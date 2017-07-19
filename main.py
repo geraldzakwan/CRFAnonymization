@@ -227,6 +227,12 @@ def identify_private_organizational_phrases(normalized_tokenized_output):
     print('Anonymize private organizational phrases:')
     return anonymized_per_sentence
 
+def identify_private_event_phrases(normalized_tokenized_output):
+    all_idx = sample_rule_based.private_event_main_function(normalized_tokenized_output)
+    anonymized_per_sentence = org_anonymization.anonymize_all_event(normalized_tokenized_output, all_idx)
+    print('Anonymize private event phrases:')
+    return anonymized_per_sentence
+
 def identify_private_temporal_phrases(message):
     # message = ""
     # i = 0
@@ -326,6 +332,10 @@ if __name__ == '__main__':
     print('')
     print('')
     print(identify_private_personal_phrases(ner_prediction))
+    print('')
+    print('')
+    print('')
+    print(identify_private_event_phrases(ner_prediction))
     print('')
     print('')
     print('')

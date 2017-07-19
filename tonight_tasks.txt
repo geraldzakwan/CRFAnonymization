@@ -21,7 +21,7 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 
 - Bug ngk ada titik, I-nya kelewatan overflow SUSAH INI BANYAK KASUSNYA. Oh gampang si, tambah titik ae di belakang. DONE
 
-- Yang event sama gpe gan belom HAHA
+- Yang event sama gpe gan belom HAHA DONE TAPI BELOM DITEST BELOM SEMPURNA.
 
 - SATUIN KE API
 

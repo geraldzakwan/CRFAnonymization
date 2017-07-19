@@ -79,6 +79,9 @@ regxp13 = on + " " + month + " " + date_number + num_ord
 # Date June 2
 regxp15 = on + " " + month + " " + single_number
 
+this_week_1 = "(tomorrow|the day after tomorrow|in a day|in one day|in 1 day|in two days|in three days|in 2 days|in 3 days|in four days|in 4 days|the next day|the next two days|the next three days|the next four days|the next five days|the next six days)"
+regxp16 = this_week_1
+
 reg1 = re.compile(regxp1, re.IGNORECASE)
 reg2 = re.compile(regxp2, re.IGNORECASE)
 reg3 = re.compile(rel_day, re.IGNORECASE)
@@ -95,6 +98,7 @@ reg12 = re.compile(regxp12, re.IGNORECASE)
 reg13 = re.compile(regxp13, re.IGNORECASE)
 reg14 = re.compile(regxp14, re.IGNORECASE)
 reg15 = re.compile(regxp15, re.IGNORECASE)
+reg16 = re.compile(regxp16, re.IGNORECASE)
 
 def concatenate_tuple_to_str(tuple_list):
     concatenated_str = ""
@@ -139,11 +143,16 @@ def tag_2(text):
     for m in reg6.finditer(text):
         start = m.start()
         substring = m.group()
-        if("on" in substring or "this" in substring):
+        print('SINI GAN')
+        print(substring)
+        if("on " in substring or "this " in substring):
+            print('1')
             text = text.replace(substring, 'this week')
-        elif("last" in substring):
+        elif("last " in substring):
+            print('2')
             text = text.replace(substring, 'last week')
-        elif("next" in substring):
+        elif("next " in substring):
+            print('3')
             text = text.replace(substring, 'next week')
 
     # At 3 pm
@@ -246,6 +255,11 @@ def tag_2(text):
         idx_space_2 = substring.rfind(' ')
         replacement = substring[(idx_space_1 + 1):idx_space_2]
         text = text.replace(substring, 'in ' + replacement)
+
+    for m in reg16.finditer(text):
+        start = m.start()
+        substring = m.group()
+        text = text.replace(substring, 'this week')
 
     return text
 
