@@ -19,15 +19,16 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 
 - Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution) DONE
 
+- Bug ngk ada titik, I-nya kelewatan overflow SUSAH INI BANYAK KASUSNYA. Oh gampang si, tambah titik ae di belakang. DONE
+
 - Yang event sama gpe gan belom HAHA
 
-- Bug ngk ada titik, I-nya kelewatan overflow SUSAH INI BANYAK KASUSNYA. Oh gampang si, tambah titik ae di belakang.
+- SATUIN KE API
 
-Dua ini terakhir aja
 - Yang google co-occurence metrics buat nge detect noun (pake noun chunking selain yang udah
   di rule based approach)
+
 - Google co-occurence metrics pastiin besok bikin KEY BARU, register email baru
-- SATUIN KE API
 
 Further improvement on names(ngk mungkin sekarang):
 - Gantinya gimana ya apa nama pertama aja? Ato dua2 diganti

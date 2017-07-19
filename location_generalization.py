@@ -166,7 +166,7 @@ def generalize_loc(ret_dict, location, level):
             return "some cities in " + return_it_or_above(loc_detail_list, idx, 'continent_name')
     else:
         # Return random continent if not known
-        list_of_value = continent_dict.values()
+        list_of_value = continent_dict.keys()
         idx = randint(0, len(continent_dict)-1)
         return list_of_value[idx]
 
@@ -180,7 +180,7 @@ def search_upper_entity(loc_list, location, key):
     # print('Key : ' + key)
     for i in range(0, len(loc_list)):
         if(loc_list[i][key] == location):
-            print('Location list : ' + str(loc_list[i]))
+            # print('Location list : ' + str(loc_list[i]))
             if (key == 'city_name'):
                 return return_it_or_above_with_key(loc_list, i, 'subdivision_2_name')
             elif (key == 'subdivision_2_name'):
@@ -250,7 +250,8 @@ def replace_with_similar_loc(ret_dict, location):
         else:
             return None
     else:
-        list_of_value = continent_dict.values()
+        list_of_value = continent_dict.keys()
+        # print(list_of_value)
         idx = randint(0, len(continent_dict)-1)
         return list_of_value[idx]
 
