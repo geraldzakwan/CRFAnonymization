@@ -22,6 +22,7 @@ numbers = "(^a(?=\s)|one|two|three|four|five|six|seven|eight|nine|ten| \
           eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty| \
           ninety|hundred|thousand)"
 hour_number = "(1|2|3|4|5|6|7|8|9|10|11|12)"
+single_number = "(1|2|3|4|5|6|7|8|9|0)"
 minute_number = "(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)"
 date_number = "(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32)"
 day = "(monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
@@ -36,6 +37,7 @@ iso = "\d+[/-]\d+[/-]\d+ \d+:\d+:\d+\.\d+"
 year = "((?<=\s)\d{4}|^\d{4})"
 prep_day = "(on|this|next|last)"
 at = "(at)"
+at_or_around = "(at|around)"
 on = "(on)"
 around = "(around)"
 o_clock = "(o'clock)"
@@ -48,18 +50,19 @@ hour_desc = "(AM|PM|am|pm|a.m.|p.m.|A.M.|P.M.|a.m|p.m|A.M|P.M)"
 regxp1 = "((\d+|(" + numbers + "[-\s]?)+) " + dmy + "s? " + exp1 + ")"
 regxp2 = "(" + exp2 + " (" + dmy + "|" + week_day + "|" + month + "))"
 
-# ASUMSI : TEMPORAL PHRASE DI AWAL
+# ASUMSI : TEMPORAL PHRASE TAGGING DILAKUKAN DI AWAL BGT
+
 # on / this / next / last Sunday
 regxp6 = prep_day + " " + day
 # at 3 pm
-regxp7 = at + " " + hour_number + " " + hour_desc
+regxp7 = at_or_around + " " + hour_number + " " + hour_desc
 # at 3 o'clock in the afternoon
-regxp8 = at + " " + hour_number + " " + o_clock + " " + prep_in + " " + the + " " + daytime
+regxp8 = at_or_around + " " + hour_number + " " + o_clock + " " + prep_in + " " + the + " " + daytime
 # at 3 o'clock
-regxp9 = at + " " + hour_number + " " + o_clock
+regxp9 = at_or_around + " " + hour_number + " " + o_clock
 # at 3.20 pm
 # regxp10 = at + " " + hour_number + " " + conj + " " + minute_number + " " + hour_desc
-regxp10 = at + " " + hour_number + conj + minute_number + " " + hour_desc
+regxp10 = at_or_around + " " + hour_number + conj + minute_number + " " + hour_desc
 
 # Date 20 June
 regxp12 = on + " " + date_number + " " + month
@@ -68,10 +71,13 @@ regxp12 = on + " " + date_number + " " + month
 regxp11 = on + " " + date_number + num_ord + " " + month
 
 # Date June 20
-regxp14 = on + " " + month + " " + date_number
+regxp14 = on + " " + month + " " + single_number + single_number
 
 # Date June 20th
 regxp13 = on + " " + month + " " + date_number + num_ord
+
+# Date June 2
+regxp15 = on + " " + month + " " + single_number
 
 reg1 = re.compile(regxp1, re.IGNORECASE)
 reg2 = re.compile(regxp2, re.IGNORECASE)
@@ -88,6 +94,7 @@ reg11 = re.compile(regxp11, re.IGNORECASE)
 reg12 = re.compile(regxp12, re.IGNORECASE)
 reg13 = re.compile(regxp13, re.IGNORECASE)
 reg14 = re.compile(regxp14, re.IGNORECASE)
+reg15 = re.compile(regxp15, re.IGNORECASE)
 
 def concatenate_tuple_to_str(tuple_list):
     concatenated_str = ""
@@ -143,7 +150,8 @@ def tag_2(text):
     for m in reg7.finditer(text):
         start = m.start()
         substring = m.group()
-        number = int(substring[3])
+        idx_space = substring.find(' ')
+        number = int(substring[idx_space + 1])
         # number = extract_simple_hour(substring)
         if(am_or_pm(substring) == "am"):
             if(number < 4):
@@ -178,7 +186,8 @@ def tag_2(text):
     for m in reg10.finditer(text):
         start = m.start()
         substring = m.group()
-        number = int(substring[3])
+        idx_space = substring.find(' ')
+        number = int(substring[idx_space + 1])
         # number = extract_simple_hour(substring)
         if(am_or_pm(substring) == "am"):
             if(number < 4):
@@ -203,7 +212,7 @@ def tag_2(text):
         replacement = substring[(idx_space + 1):]
         text = text.replace(substring, 'in ' + replacement)
 
-    # on 20th June
+    # on 20 June
     for m in reg12.finditer(text):
         start = m.start()
         substring = m.group()
@@ -211,7 +220,7 @@ def tag_2(text):
         replacement = substring[(idx_space + 1):]
         text = text.replace(substring, 'in ' + replacement)
 
-    # on June 20
+    # on June 20th
     for m in reg13.finditer(text):
         start = m.start()
         substring = m.group()
@@ -220,7 +229,7 @@ def tag_2(text):
         replacement = substring[(idx_space_1 + 1):idx_space_2]
         text = text.replace(substring, 'in ' + replacement)
 
-    # June 20th
+    # on June 20
     for m in reg14.finditer(text):
         start = m.start()
         substring = m.group()
@@ -229,7 +238,16 @@ def tag_2(text):
         replacement = substring[(idx_space_1 + 1):idx_space_2]
         text = text.replace(substring, 'in ' + replacement)
 
-    print(text)
+    # on June 2
+    for m in reg15.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_space_1 = substring.find(' ')
+        idx_space_2 = substring.rfind(' ')
+        replacement = substring[(idx_space_1 + 1):idx_space_2]
+        text = text.replace(substring, 'in ' + replacement)
+
+    return text
 
 def tag(text):
 
@@ -576,7 +594,7 @@ def demo():
     print tag(text)
 
 def do_temporal_tag(text):
-    tag_2(text)
+    return tag_2(text)
 
 if __name__ == '__main__':
     # demo2(sys.argv[1])

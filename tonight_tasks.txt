@@ -13,9 +13,9 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 - Buat anonymization organization, sesuain ama laporan, simple. DONE
 'Kasi phrasenya jg harusnya wkwk'
 
-- Tambah rule yang time, target minimal 8
+- Tambah rule yang time, target minimal 8 DONE, kecuali mau disempurnain
 
-- Anonymization time, generalnya dipikirin
+- Anonymization time, generalnya dipikirin DONE, kecuali mau disempurnain
 
 - Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution)
 

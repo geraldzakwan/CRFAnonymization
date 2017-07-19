@@ -258,9 +258,21 @@ if __name__ == '__main__':
         sys.exit('Wrong 1st arguments')
 
     input_message = sys.argv[3]
-    list_of_ret = do_pos_tag(input_message)
+
+    # Di awal aja
+    anonymized_temporal_message = identify_private_temporal_phrases(input_message)
+    is_generalized_temporal = not (input_message == anonymized_temporal_message)
+    # print('')
+    # print('')
+    # print('')
+
+    list_of_ret = do_pos_tag(anonymized_temporal_message)
+    # list_of_ret_2 = do_pos_tag(input_message)
     pos_tagged_input = list_of_ret[0]
     normalized_original_token = list_of_ret[1]
+
+    # Ini yg bener2 asli kgk di anonymize temporalnya
+    # normalized_original_token_2 = list_of_ret_2[1]
     # print(list_of_ret[1])
     # sys.exit()
     featured_input = extract_features(pos_tagged_input)
@@ -337,4 +349,7 @@ if __name__ == '__main__':
     print('')
 
     print('Similarity measure value:')
-    print(compute_similarity(original_text_with_space, anonymized_text_with_space))
+    similarity = compute_similarity(original_text_with_space, anonymized_text_with_space)
+    if(similarity == 1.0 and is_generalized_temporal):
+        similarity = compute_similarity(input_message, anonymized_text_with_space)
+    print(similarity)
