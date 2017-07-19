@@ -51,6 +51,8 @@ regxp1 = "((\d+|(" + numbers + "[-\s]?)+) " + dmy + "s? " + exp1 + ")"
 regxp2 = "(" + exp2 + " (" + dmy + "|" + week_day + "|" + month + "))"
 
 # ASUMSI : TEMPORAL PHRASE TAGGING DILAKUKAN DI AWAL BGT
+# on / this / next / last Sunday
+regxp17 = prep_day + " " + day + " " + daytime
 
 # on / this / next / last Sunday
 regxp6 = prep_day + " " + day
@@ -99,6 +101,7 @@ reg13 = re.compile(regxp13, re.IGNORECASE)
 reg14 = re.compile(regxp14, re.IGNORECASE)
 reg15 = re.compile(regxp15, re.IGNORECASE)
 reg16 = re.compile(regxp16, re.IGNORECASE)
+reg17 = re.compile(regxp17, re.IGNORECASE)
 
 def concatenate_tuple_to_str(tuple_list):
     concatenated_str = ""
@@ -139,20 +142,24 @@ def extract_simple_hour(str):
         return 9
 
 def tag_2(text):
+    # on Friday morning
+    for m in reg17.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_daytime = substring.rfind(' ')
+        text = text.replace(substring, 'this week in the' + substring[idx_daytime:])
+
     # On Sunday
     for m in reg6.finditer(text):
         start = m.start()
         substring = m.group()
-        print('SINI GAN')
-        print(substring)
+        # print('SINI GAN')
+        # print(substring)
         if("on " in substring or "this " in substring):
-            print('1')
             text = text.replace(substring, 'this week')
         elif("last " in substring):
-            print('2')
             text = text.replace(substring, 'last week')
         elif("next " in substring):
-            print('3')
             text = text.replace(substring, 'next week')
 
     # At 3 pm
