@@ -19,17 +19,17 @@ def get_total_results(word):
     return total_results
 
 def co_occurence(word1, word2):
-    # and_total_results = get_total_results(word1 + " AND " + word2)
-    # or_total_results = get_total_results(word1 + " OR " + word2)
-    # ret = and_total_results/or_total_results
-    ret = random.random()
+    and_total_results = get_total_results(word1 + " AND " + word2)
+    or_total_results = get_total_results(word1 + " OR " + word2)
+    ret = and_total_results/or_total_results
+    # ret = random.random()
 
-    # print('-----')
-    # print(word1, word2)
-    # print(ret)
-    # print('-----')
-    # print(and_total_results)
-    # print(or_total_results)
+    print('-----')
+    print(word1, word2)
+    print(ret)
+    print('-----')
+    print(and_total_results)
+    print(or_total_results)
 
     return ret
 

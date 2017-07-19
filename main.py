@@ -171,6 +171,55 @@ def co_occurence_calculation(username, ner_prediction):
     # print(predicted_sentence_cooccurence)
     return predicted_sentence_cooccurence
 
+# Ambil smua yang ke tagged_named_entity
+# Bandingin sama yang sama (person dgn person) dah trus baru itung co-occurence terbesarnya
+def co_occurence_calculation_2(username, ner_prediction):
+    # Kasi kasus disini, kalo dia location dibandingin ama attribut mana aja di user profil, dkk
+    user_dict = fetch_user_profile.get_data(username)
+    # print(user_dict)
+    # predicted_sentence_cooccurence = []
+
+    for i in range(0, len(ner_prediction)):
+        co_occurence_dict = {}
+        highest_co_occurence = 0
+        # print(chunk_tuple[1])
+        if ("O" == ner_prediction[i][1]):
+            # Compare with all
+            co_occurence_dict['education'] = google_search.co_occurence(user_dict['education'], ner_prediction[i][0])
+            co_occurence_dict['work'] = google_search.co_occurence(user_dict['work'], ner_prediction[i][0])
+            # co_occurence_dict['email_address'] = google_search.co_occurence(user_dict['email_address'], ner_prediction[i][0])
+            co_occurence_dict['full_name'] = google_search.co_occurence(user_dict['full_name'], ner_prediction[i][0])
+            co_occurence_dict['hometown_city'] = google_search.co_occurence(user_dict['hometown_city'], ner_prediction[i][0])
+            co_occurence_dict['current_city'] = google_search.co_occurence(user_dict['current_city'], ner_prediction[i][0])
+
+            key = 'None'
+            value = 0
+            for keys in co_occurence_dict.keys():
+                value = co_occurence_dict[keys]
+                if(value > highest_co_occurence):
+                    highest_co_occurence = value
+                    key = keys
+
+            if(key != 'None'):
+                print('MASUK SINI GAN')
+                if(value >= 0,03):
+                    if(key == 'education' or key == 'work'):
+                        ner_prediction[i][1] = 'org'
+                    elif(key == 'full_name'):
+                        ner_prediction[i][1] = 'per'
+                    elif(key == 'hometown_city' or key == 'current_city'):
+                        ner_prediction[i][1] = 'geo'
+                print(key, value, ner_prediction[i][1])
+
+            # predicted_sentence_cooccurence.append(co_occurence)
+        else:
+            pass
+            # predicted_sentence_cooccurence.append(co_occurence)
+
+    # print(predicted_sentence_cooccurence)
+    # return predicted_sentence_cooccurence
+    return ner_prediction
+
 def simple_anonymize(ner_prediction):
     anonymize_predicted_sentence = anonymization.simple_anonymization(ner_prediction)
     final_sentence = postprocessing.restructure_sentence(anonymize_predicted_sentence)
@@ -302,7 +351,12 @@ if __name__ == '__main__':
     # print ''
     # print ''
 
-    predicted_sentence_cooccurence = co_occurence_calculation(sys.argv[4], ner_prediction)
+    # predicted_sentence_cooccurence = co_occurence_calculation(sys.argv[4], ner_prediction)
+    # KUOTA ABIS
+    # ner_prediction = co_occurence_calculation_2(sys.argv[4], ner_prediction)
+    # print('This is it:')
+    # print(ner_prediction)
+    # sys.exit()
 
     print('')
     print('')
