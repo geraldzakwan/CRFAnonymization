@@ -256,14 +256,21 @@ def replace_with_similar_loc(ret_dict, location):
 
 def anonymize_all_location(ner_prediction, idx_dict, level):
     ret_dict = get_loc_list()
+    solution_dict = {}
 
     for keys in idx_dict:
         # print("Keys : ", keys)
-        similar_loc = replace_with_similar_loc(ret_dict, ner_prediction[keys][0])
-        if(similar_loc != None):
-            ner_prediction[keys][0] = similar_loc
+        if(ner_prediction[keys][0] not in solution_dict):
+            similar_loc = replace_with_similar_loc(ret_dict, ner_prediction[keys][0])
+            if(similar_loc != None):
+                solution_dict[ner_prediction[keys][0]] = similar_loc
+                ner_prediction[keys][0] = similar_loc
+            else:
+                sol = generalize_loc(ret_dict, ner_prediction[keys][0], level)
+                solution_dict[ner_prediction[keys][0]] = sol
+                ner_prediction[keys][0] = sol
         else:
-            ner_prediction[keys][0] = generalize_loc(ret_dict, ner_prediction[keys][0], level)
+            ner_prediction[keys][0] = solution_dict[ner_prediction[keys][0]]
 
     return ner_prediction
 

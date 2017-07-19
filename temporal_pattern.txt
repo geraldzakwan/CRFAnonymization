@@ -15,4 +15,4 @@ last Sunday
 on Sunday next week
 
 Catatan : Lebih aman temporal pattern diextract dari final anonymized sentence
-karena udah pake spasi
+karena udah pake spasi. Salah, amanan di awal.

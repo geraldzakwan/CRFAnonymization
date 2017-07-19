@@ -19,6 +19,8 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 
 - Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution)
 
+- Yang event sama gpe gan belom HAHA
+
 - Bug ngk ada titik, I-nya kelewatan overflow
 
 Dua ini terakhir aja

@@ -99,35 +99,44 @@ def anonymize_all_person(normalized_tokenized_output, all_idx):
     surname_list = name_list['last_name']
     o = len(surname_list)
 
+    solution_dict = {}
+
     for idx in all_idx:
-        # Get gender from API
-        name = normalized_tokenized_output[idx][0]
-        number_of_word = number_of_words(name)
+        if(normalized_tokenized_output[idx][0] not in solution_dict):
+            # Get gender from API
+            name = normalized_tokenized_output[idx][0]
+            number_of_word = number_of_words(name)
 
-        gender = get_gender_info_only(name)
+            gender = get_gender_info_only(name)
 
-        if (gender == None):
-            sys.exit('New case gender None')
-        else:
-            if(gender == 'male'):
-                # Nanti ini bisa diganti jadi yang terdekat, kalo niat, NGK USAH DUDE TY
-                if(number_of_word == 1):
-                    rand_int = randint(0, m-1)
-                    normalized_tokenized_output[idx][0] = male_list[rand_int]
-                else:
-                    rand_int_first_name = randint(0, m-1)
-                    rand_int_last_name = randint(0, o-1)
-                    normalized_tokenized_output[idx][0] = male_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
-            elif(gender == 'female'):
-                if(number_of_word == 1):
-                    rand_int = randint(0, n-1)
-                    normalized_tokenized_output[idx][0] = female_list[rand_int]
-                else:
-                    rand_int_first_name = randint(0, n-1)
-                    rand_int_last_name = randint(0, o-1)
-                    normalized_tokenized_output[idx][0] = female_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
+            if (gender == None):
+                sys.exit('New case gender None')
             else:
-                sys.exit('New case strange')
+                if(gender == 'male'):
+                    # Nanti ini bisa diganti jadi yang terdekat, kalo niat, NGK USAH DUDE TY
+                    if(number_of_word == 1):
+                        rand_int = randint(0, m-1)
+                        solution_dict[normalized_tokenized_output[idx][0]] = male_list[rand_int]
+                        normalized_tokenized_output[idx][0] = male_list[rand_int]
+                    else:
+                        rand_int_first_name = randint(0, m-1)
+                        rand_int_last_name = randint(0, o-1)
+                        solution_dict[normalized_tokenized_output[idx][0]] = male_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
+                        normalized_tokenized_output[idx][0] = male_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
+                elif(gender == 'female'):
+                    if(number_of_word == 1):
+                        rand_int = randint(0, n-1)
+                        solution_dict[normalized_tokenized_output[idx][0]] = female_list[rand_int]
+                        normalized_tokenized_output[idx][0] = female_list[rand_int]
+                    else:
+                        rand_int_first_name = randint(0, n-1)
+                        rand_int_last_name = randint(0, o-1)
+                        solution_dict[normalized_tokenized_output[idx][0]] = female_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
+                        normalized_tokenized_output[idx][0] = female_list[rand_int_first_name] + " " + surname_list[rand_int_last_name]
+                else:
+                    sys.exit('New case strange')
+        else:
+            normalized_tokenized_output[idx][0] = solution_dict[normalized_tokenized_output[idx][0]]
 
     return normalized_tokenized_output
 
