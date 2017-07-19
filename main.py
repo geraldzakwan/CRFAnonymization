@@ -40,6 +40,11 @@ def load_or_train_crf(load, filename):
 
     return crf
 
+def add_full_stop(text):
+    if(text[len(text) - 1] != '.'):
+        text = text + '.'
+    return text
+
 def do_pos_tag(text_input):
     tokenized_input = nltk.word_tokenize(text_input)
 
@@ -258,6 +263,7 @@ if __name__ == '__main__':
         sys.exit('Wrong 1st arguments')
 
     input_message = sys.argv[3]
+    input_message = add_full_stop(input_message)
 
     # Di awal aja
     anonymized_temporal_message = identify_private_temporal_phrases(input_message)

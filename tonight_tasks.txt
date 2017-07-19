@@ -17,11 +17,11 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 
 - Anonymization time, generalnya dipikirin DONE, kecuali mau disempurnain
 
-- Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution)
+- Kalo dia entity yang namanya sama, replacenya juga sama (sedikit co-reference resolution) DONE
 
 - Yang event sama gpe gan belom HAHA
 
-- Bug ngk ada titik, I-nya kelewatan overflow
+- Bug ngk ada titik, I-nya kelewatan overflow SUSAH INI BANYAK KASUSNYA. Oh gampang si, tambah titik ae di belakang.
 
 Dua ini terakhir aja
 - Yang google co-occurence metrics buat nge detect noun (pake noun chunking selain yang udah
