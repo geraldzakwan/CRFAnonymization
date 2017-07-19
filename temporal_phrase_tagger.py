@@ -17,36 +17,77 @@ import nltk
 # http://www.egenix.com/products/python/mxBase/"""
 
 # Predefined strings.
-prep_day = "(on)"
-prep_hour = "(at)"
-hour_desc = "(AM|PM|am|pm|a.m.|p.m.|A.M.|P.M.|a.m|p.m|A.M|P.M)"
 numbers = "(^a(?=\s)|one|two|three|four|five|six|seven|eight|nine|ten| \
           eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen| \
           eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty| \
           ninety|hundred|thousand)"
-numbers_2 = "(1|2|3|4|5|6|7|8|9|10|11|12)"
+hour_number = "(1|2|3|4|5|6|7|8|9|10|11|12)"
+minute_number = "(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59)"
+date_number = "(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32)"
 day = "(monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
 week_day = "(monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
 month = "(january|february|march|april|may|june|july|august|september| \
-          october|november|december)"
+          october|november|december|jan|feb|mar|apr|jul|aug|sept|oct|nov|dec)"
 dmy = "(year|day|week|month)"
 rel_day = "(today|yesterday|tomorrow|tonight|tonite)"
 exp1 = "(before|after|earlier|later|ago)"
 exp2 = "(this|next|last)"
 iso = "\d+[/-]\d+[/-]\d+ \d+:\d+:\d+\.\d+"
 year = "((?<=\s)\d{4}|^\d{4})"
+prep_day = "(on|this|next|last)"
+at = "(at)"
+on = "(on)"
+around = "(around)"
+o_clock = "(o'clock)"
+prep_in = "(in)"
+the = "(the)"
+conj = "(.|:)"
+num_ord = "(st|nd|rd|th)"
+daytime = "(morning|afternoon|evening|night)"
+hour_desc = "(AM|PM|am|pm|a.m.|p.m.|A.M.|P.M.|a.m|p.m|A.M|P.M)"
 regxp1 = "((\d+|(" + numbers + "[-\s]?)+) " + dmy + "s? " + exp1 + ")"
 regxp2 = "(" + exp2 + " (" + dmy + "|" + week_day + "|" + month + "))"
-regxp3 = prep_day + " " + day
-regxp4 = prep_hour + " " + numbers_2 + " " + hour_desc
+
+# ASUMSI : TEMPORAL PHRASE DI AWAL
+# on / this / next / last Sunday
+regxp6 = prep_day + " " + day
+# at 3 pm
+regxp7 = at + " " + hour_number + " " + hour_desc
+# at 3 o'clock in the afternoon
+regxp8 = at + " " + hour_number + " " + o_clock + " " + prep_in + " " + the + " " + daytime
+# at 3 o'clock
+regxp9 = at + " " + hour_number + " " + o_clock
+# at 3.20 pm
+# regxp10 = at + " " + hour_number + " " + conj + " " + minute_number + " " + hour_desc
+regxp10 = at + " " + hour_number + conj + minute_number + " " + hour_desc
+
+# Date 20 June
+regxp12 = on + " " + date_number + " " + month
+
+# Date 20th June
+regxp11 = on + " " + date_number + num_ord + " " + month
+
+# Date June 20
+regxp14 = on + " " + month + " " + date_number
+
+# Date June 20th
+regxp13 = on + " " + month + " " + date_number + num_ord
 
 reg1 = re.compile(regxp1, re.IGNORECASE)
 reg2 = re.compile(regxp2, re.IGNORECASE)
 reg3 = re.compile(rel_day, re.IGNORECASE)
 reg4 = re.compile(iso)
 reg5 = re.compile(year)
-reg6 = re.compile(regxp3, re.IGNORECASE)
-reg7 = re.compile(regxp4, re.IGNORECASE)
+
+reg6 = re.compile(regxp6, re.IGNORECASE)
+reg7 = re.compile(regxp7, re.IGNORECASE)
+reg8 = re.compile(regxp8, re.IGNORECASE)
+reg9 = re.compile(regxp9, re.IGNORECASE)
+reg10 = re.compile(regxp10, re.IGNORECASE)
+reg11 = re.compile(regxp11, re.IGNORECASE)
+reg12 = re.compile(regxp12, re.IGNORECASE)
+reg13 = re.compile(regxp13, re.IGNORECASE)
+reg14 = re.compile(regxp14, re.IGNORECASE)
 
 def concatenate_tuple_to_str(tuple_list):
     concatenated_str = ""
@@ -59,6 +100,137 @@ def concatenate_tuple_to_str(tuple_list):
 
     return concatenated_str
 
+def am_or_pm(str):
+    str = str.lower()
+    if("a.m" in str or "am" in str):
+        return "am"
+    elif("p.m" in str or "pm" in str):
+        return "pm"
+
+def extract_simple_hour(str):
+    if('1' in str):
+        return 1
+    if('2' in str):
+        return 2
+    if('3' in str):
+        return 3
+    if('4' in str):
+        return 4
+    if('5' in str):
+        return 5
+    if('6' in str):
+        return 6
+    if('7' in str):
+        return 7
+    if('8' in str):
+        return 8
+    if('9' in str):
+        return 9
+
+def tag_2(text):
+    # On Sunday
+    for m in reg6.finditer(text):
+        start = m.start()
+        substring = m.group()
+        if("on" in substring or "this" in substring):
+            text = text.replace(substring, 'this week')
+        elif("last" in substring):
+            text = text.replace(substring, 'last week')
+        elif("next" in substring):
+            text = text.replace(substring, 'next week')
+
+    # At 3 pm
+    for m in reg7.finditer(text):
+        start = m.start()
+        substring = m.group()
+        number = int(substring[3])
+        # number = extract_simple_hour(substring)
+        if(am_or_pm(substring) == "am"):
+            if(number < 4):
+                text = text.replace(substring, 'in the night')
+            elif(number < 11):
+                text = text.replace(substring, 'in the morning')
+            else:
+                text = text.replace(substring, 'in the afternoon')
+        else:
+            if(number < 4):
+                text = text.replace(substring, 'in the afternoon')
+            elif(number < 9):
+                text = text.replace(substring, 'in the evening')
+            else:
+                text = text.replace(substring, 'in the night')
+
+    # At 3 o'clock in the afternoon
+    for m in reg8.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_2 = substring.find('in')
+        replacement = substring[idx_2:]
+        text = text.replace(substring, replacement)
+
+    # At 3 o'clock
+    for m in reg9.finditer(text):
+        start = m.start()
+        substring = m.group()
+        text = text.replace(substring, 'in the afternoon')
+
+    # At 3.20 pm
+    for m in reg10.finditer(text):
+        start = m.start()
+        substring = m.group()
+        number = int(substring[3])
+        # number = extract_simple_hour(substring)
+        if(am_or_pm(substring) == "am"):
+            if(number < 4):
+                text = text.replace(substring, 'in the night')
+            elif(number < 11):
+                text = text.replace(substring, 'in the morning')
+            else:
+                text = text.replace(substring, 'in the afternoon')
+        else:
+            if(number < 4):
+                text = text.replace(substring, 'in the afternoon')
+            elif(number < 9):
+                text = text.replace(substring, 'in the evening')
+            else:
+                text = text.replace(substring, 'in the night')
+
+    # on 20th June
+    for m in reg11.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_space = substring.rfind(' ')
+        replacement = substring[(idx_space + 1):]
+        text = text.replace(substring, 'in ' + replacement)
+
+    # on 20th June
+    for m in reg12.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_space = substring.rfind(' ')
+        replacement = substring[(idx_space + 1):]
+        text = text.replace(substring, 'in ' + replacement)
+
+    # on June 20
+    for m in reg13.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_space_1 = substring.find(' ')
+        idx_space_2 = substring.rfind(' ')
+        replacement = substring[(idx_space_1 + 1):idx_space_2]
+        text = text.replace(substring, 'in ' + replacement)
+
+    # June 20th
+    for m in reg14.finditer(text):
+        start = m.start()
+        substring = m.group()
+        idx_space_1 = substring.find(' ')
+        idx_space_2 = substring.rfind(' ')
+        replacement = substring[(idx_space_1 + 1):idx_space_2]
+        text = text.replace(substring, 'in ' + replacement)
+
+    print(text)
+
 def tag(text):
 
     # Initialization
@@ -66,31 +238,31 @@ def tag(text):
 
     # re.findall() finds all the substring matches, keep only the full
     # matching string. Captures expressions such as 'number of days' ago, etc.
-    found = reg1.findall(text)
-    found = [a[0] for a in found if len(a) > 1]
-    for timex in found:
-        timex_found.append(timex)
+    # found = reg1.findall(text)
+    # found = [a[0] for a in found if len(a) > 1]
+    # for timex in found:
+    #     timex_found.append(timex)
 
-    # Variations of this thursday, next year, etc
-    found = reg2.findall(text)
-    found = [a[0] for a in found if len(a) > 1]
-    for timex in found:
-        timex_found.append(timex)
-
-    # today, tomorrow, etc
-    found = reg3.findall(text)
-    for timex in found:
-        timex_found.append(timex)
-
-    # ISO
-    found = reg4.findall(text)
-    for timex in found:
-        timex_found.append(timex)
-
-    # Year
-    found = reg5.findall(text)
-    for timex in found:
-        timex_found.append(timex)
+    # # Variations of this thursday, next year, etc
+    # found = reg2.findall(text)
+    # found = [a[0] for a in found if len(a) > 1]
+    # for timex in found:
+    #     timex_found.append(timex)
+    #
+    # # today, tomorrow, etc
+    # found = reg3.findall(text)
+    # for timex in found:
+    #     timex_found.append(timex)
+    #
+    # # ISO
+    # found = reg4.findall(text)
+    # for timex in found:
+    #     timex_found.append(timex)
+    #
+    # # Year
+    # found = reg5.findall(text)
+    # for timex in found:
+    #     timex_found.append(timex)
 
     # Day
     found = reg6.findall(text)
@@ -107,11 +279,25 @@ def tag(text):
     for timex in found:
         timex_found.append(concatenate_tuple_to_str(timex))
 
+    # Hour
+    found = reg8.findall(text)
+    for timex in found:
+        timex_found.append(concatenate_tuple_to_str(timex))
+
+    found = reg9.findall(text)
+    for timex in found:
+        timex_found.append(concatenate_tuple_to_str(timex))
+
+    found = reg10.findall(text)
+    print('Found, ' + str(found))
+    for timex in found:
+        timex_found.append(concatenate_tuple_to_str(timex))
+
     # Tag only temporal expressions which haven't been tagged.
     for timex in timex_found:
         text = re.sub(timex + '(?!</TIMEX2>)', '<TIMEX2>' + timex + '</TIMEX2>', text)
 
-    text = text.replace("<TIMEX2>at 3 pm</TIMEX2>", "in the afternoon")
+    # text = text.replace("<TIMEX2>at 3 pm</TIMEX2>", "in the afternoon")
 
     return text
 
@@ -390,7 +576,9 @@ def demo():
     print tag(text)
 
 def do_temporal_tag(text):
-    return tag(text)
+    tag_2(text)
 
 if __name__ == '__main__':
-    demo2(sys.argv[1])
+    # demo2(sys.argv[1])
+    # print(do_temporal_tag(sys.argv[1]))
+    do_temporal_tag(sys.argv[1])

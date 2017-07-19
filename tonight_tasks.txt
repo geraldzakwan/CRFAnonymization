@@ -10,7 +10,7 @@ kalo lebih combine first_name dan last_name dua2nya random. DONE
 
 - Buat anonymization location, pake yang setipe satu general DONE
 
-- Buat anonymization organization, sesuain ama laporan, simple. HALF DONE
+- Buat anonymization organization, sesuain ama laporan, simple. DONE
 'Kasi phrasenya jg harusnya wkwk'
 
 - Tambah rule yang time, target minimal 8

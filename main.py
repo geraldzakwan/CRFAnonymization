@@ -324,10 +324,11 @@ if __name__ == '__main__':
     anonymized_text_with_space = list_of_post_ret[0]
     original_text_with_space = list_of_post_ret[1]
 
-    anonymized_text_with_space = identify_private_temporal_phrases(anonymized_text_with_space)
-    print('')
-    print('')
-    print('')
+    # Di awal aja
+    # anonymized_text_with_space = identify_private_temporal_phrases(anonymized_text_with_space)
+    # print('')
+    # print('')
+    # print('')
 
     print('Final anonymized sentence:')
     print(anonymized_text_with_space)
